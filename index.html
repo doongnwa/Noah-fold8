@@ -222,14 +222,39 @@ if(kakaoRoom){
  me('하 배가 너무 부르다','오후 11:00')+
  me('<img class="chat-sticker" src="ddong-sticker.png" alt="배부른 고양이 이모티콘">','오후 11:00')+
  me('지금 이상태','오후 11:00')+
- them('전화하장','오후 11:00');
+ them('전화하장','오후 11:00')+
+ '<div class="kakao-day">2026년 9월 28일 월요일</div>'+
+ me('잔소리 대~~~~마왕 둥둥씨','')+
+ me('걱정왕 둥둥씨!!','')+
+ them('다 사랑해서 그런거야 !!','')+
+ me('그냥','')+
+ me('나도 사항한다구','')+
+ me('사랑한다구','')+
+ me('하 오타…','')+
+ them('ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ','')+
+ them('나도 사랑해💜💜','')+
+ me('치유 완료 1000%💜','')+
+ me('나 또 안아','')+
+ me('빨리이','')+
+ them('응응 일루와','')+
+ me('꽉 안아','')+
+ them('꽈아아아아악','')+
+ me('🫂','오전 1:59')+
+ them('🫂🫂🫂','오전 2:00')+
+ them('전화하고 잘까?','오전 2:01')+
+ me('씻고올게! 찹찹타임 전화하자','오전 2:02')+
+ them('네!','오전 2:02')+
+ me('투정 받아주고 치대는 거 다 받아주는 언제나 내 편인 우리 자기!! 덕분에 무거웠던 나의 마음이 아주 많이 좋아졌다. 오늘 아주 푹 잘 수 있을 것 같아. 언제나 이 맘 변치 않고 사랑과 행복만 줄 수 있는 그런 노아가 될게요. 영원을 알려주고 믿게 해줘서 고마워요. 오늘도 너무 수고했어 잘자요 사랑해💜','오전 2:42')+
+ '<div class="kakao-day">2026년 10월 18일 일요일</div>'+
+ me('비 온다','')+
+ me('푸른 하늘의 단비 듣자 같이💜','');
  }else roomBody='<div class="kakao-placeholder">대화 내용은 추후 추가 예정</div>';
  if(kakaoRoom==='ddong')roomBody+=dynamicChat.map(renderDynamic).join('');
  inner=roomHeader+'<div class="kakao-room-body '+(kakaoRoom==='ddong'?'ddong-room':'')+'">'+roomBody+'</div>'+(kakaoRoom==='ddong'?'<div class="kakao-room-bottom"><button class="plus-chat" type="button" aria-label="첨부">＋</button><input id="chatReply" type="text" placeholder="메시지 입력" aria-label="메시지 입력" autocomplete="off"><button class="emoji-chat" type="button" aria-label="이모티콘">☻</button><button id="sendReply" type="button">전송</button></div><div class="sim-keyboard" id="simKeyboard" hidden></div>':'<div class="kakao-room-bottom">메시지 입력 (추후 구현)</div>');
 }else if(kakaoPerson){inner='<div class="kakao-top"><button class="kakao-back" id="kakaoBack" aria-label="뒤로">‹</button><span>프로필</span><span></span></div><div class="kakao-profile">'+profileAvatar(kakaoPerson)+'<strong>'+kakaoPerson+'</strong><span class="pending">프로필</span></div>'}
 else if(kakaoTab==='친구')inner='<div class="kakao-top"><h2>친구</h2><div class="kakao-tools"><span>⌕</span><span>♫</span><span>⚙</span></div></div><div class="kakao-list"><button class="kakao-row self" data-person="한노아">'+profileAvatar('한노아')+'<span class="kakao-name">한노아</span></button><div class="kakao-section">친구 '+friends.length+'</div>'+friends.map(name=>'<button class="kakao-row" data-person="'+name+'">'+profileAvatar(name)+'<span class="kakao-name">'+name+'</span></button>').join('')+'</div>';
 else {
- const rooms=[['playve','플레이브','단체 채팅 · 남예준, 채봉구, 도은호, 유하민','고정','group','♟'],['mom','어마마마','동영상','9월 6일','mom','♥'],['hamin','유하민','대화 내용 준비 중','','hamin','♙'],['ddong','내 둥둥이💜',dynamicChat.length?dynamicChat[dynamicChat.length-1].text:'전화하장',dynamicChat.length?dynamicChat[dynamicChat.length-1].time:'9월 24일','ddong','♥']];
+ const rooms=[['playve','플레이브','단체 채팅 · 남예준, 채봉구, 도은호, 유하민','고정','group','♟'],['mom','어마마마','동영상','9월 6일','mom','♥'],['hamin','유하민','대화 내용 준비 중','','hamin','♙'],['ddong','내 둥둥이💜',dynamicChat.length?dynamicChat[dynamicChat.length-1].text:'푸른 하늘의 단비 듣자 같이💜',dynamicChat.length?dynamicChat[dynamicChat.length-1].time:'10월 18일','ddong','♥']];
  inner='<div class="kakao-top"><h2>채팅</h2><div class="kakao-tools"><span>⌕</span><span>＋</span><span>⚙</span></div></div><div class="kakao-list">'+rooms.map(([id,name,preview,date,kind,symbol])=>'<button class="kakao-chat-row" data-room="'+id+'"><span class="kakao-avatar '+kind+'">'+'<img src="'+({playve:'playve-group.jpg',mom:'profile-5.jpg',hamin:'profile-4.jpg',ddong:'ddong-avatar.jpg'}[id])+'" alt="프로필">'+'</span><span class="chat-info"><span class="chat-name">'+(id==='playve'?'📌 ':'')+name+'</span><div class="chat-preview">'+preview+'</div></span><span class="chat-meta">'+date+'</span></button>').join('')+'</div>';
 }
 const nav='<nav class="kakao-nav" aria-label="카카오톡 하단 메뉴">'+tabs.map(([label,icon])=>'<button class="kakao-tab '+(label===kakaoTab?'selected':'')+'" data-tab="'+label+'" '+(!['친구','채팅'].includes(label)?'disabled aria-label="'+label+' (준비 중)"':'')+'><span class="tabicon">'+icon+'</span><span>'+label+'</span></button>').join('')+'</nav>';
