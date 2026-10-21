@@ -101,7 +101,7 @@
 .device.folding .view{animation:foldContentReveal .72s ease both}
 @keyframes foldContentReveal{0%{opacity:.48;filter:blur(3px)}50%{opacity:.7;filter:blur(1px)}100%{opacity:1;filter:blur(0)}}
 .device.open:after{opacity:.65;transition:opacity .6s}
-.lock{background:radial-gradient(ellipse at 75% 20%,#403e6b 0%,transparent 55%),linear-gradient(155deg,#10121f 5%,#292b50 60%,#101522 100%);justify-content:flex-start}
+.lock{background:#000;justify-content:flex-start}
 .lock .date{margin-top:19%;font-size:15px;font-weight:450;letter-spacing:-.2px}
 .lock .time{font-size:clamp(36px,7vw,54px);letter-spacing:-2px;font-weight:300;line-height:1.18;margin-top:10px;font-variant-numeric:tabular-nums}
 .open .lock .date{margin-top:11%}
@@ -117,6 +117,17 @@
 .chat-meta{display:flex;flex-direction:column;align-items:flex-end;gap:7px}.chat-unread{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:15px;background:#f54e52;color:#fff;font-size:11px;font-weight:700}
 .open .kakao-banner{left:23%;right:23%;max-width:54%;top:40px}
 @media(prefers-reduced-motion:reduce){.kakao-banner{transition:none}}
+</style><style>
+/* Cover screen dimensions: Galaxy Z Fold8 approx 6.5in 21:9, inner 8in */
+.device{width:min(335px,92vw,calc((100dvh - 130px)*.448));aspect-ratio:0.448;border-radius:37px;background:#09090b}
+.device.open{width:min(700px,96vw,calc((100dvh - 130px)*1.11));aspect-ratio:1.11;border-radius:23px}
+.device .screen{background:#000}
+.device:not(.open) .lock,.device.open .lock{background:#000!important}
+.device:has(.lock) .screen{background:#000!important}
+.device:has(.lock) .status{background:#000!important;color:#fff}
+.device:has(.lock) .view{background:#000!important}
+.device:has(.lock) .android-nav{background:#000!important}
+@media(max-height:750px){.device{width:min(295px,85vw,calc((100dvh - 110px)*.448))}.device.open{width:min(620px,96vw,calc((100dvh - 110px)*1.11))}}
 </style></head><body><div class="stage"><div class="toolbar"><button id="foldBtn">↔ 펼치기</button><button id="resetBtn">🔒 잠금화면</button><span id="mode">커버 화면</span></div><div class="device" id="device"><div class="screen"><div class="status"><span id="simClock">2:10</span><span>▴ ▰ ◕ 85%</span></div><div class="view" id="view"></div><div class="android-nav"><button class="recent" aria-label="최근 앱" disabled>Ⅲ</button><button id="homebar" aria-label="홈으로">□</button><button id="androidBack" aria-label="뒤로">‹</button></div></div></div><div class="note">갤럭시 Z 폴드 스타일 웹 시뮬레이션 · 비밀번호 0210 · 앱의 실제 계정이나 카메라에는 연결되지 않아.</div></div><script>
 const device=document.getElementById('device'),view=document.getElementById('view'),foldBtn=document.getElementById('foldBtn');let state='lock',digits='',opened=false,active='',kakaoTab='친구',kakaoPerson='',kakaoRoom='';
 const iconFiles={'카카오톡':'icon-kakao.png','전화':'icon-phone.png','Samsung Health':'icon-health.png','메시지':'icon-messages.png'};
@@ -167,7 +178,7 @@ let icon=([name,symbol,bg])=>'<button class="app" data-app="'+name+'"><span clas
 view.innerHTML='<div class="desktop"><div class="home-widgets"><div class="brief"><span class="brief-mark">◒</span><span><b>Now brief</b><small>오늘의 하이라이트</small></span></div><div class="widget-right"><div class="weather">☁️ <span><b>28°</b><small>서울특별시</small></span></div><div class="date-widget"><span>◷</span><span id="homeLiveDate"></span></div></div></div><div class="apps">'+apps.map(icon).join('')+'</div><div class="searchbar"><span class="google-g">G</span><span>⌕</span></div><div class="dock">'+[['전화','☎','#12b960'],['메시지','●','#278ef0'],['카카오톡','TALK','#fee500'],['갤러리','✿','linear-gradient(135deg,#fc6895,#ff6b39,#9b35f5)']].map(icon).join('')+'</div></div>';
 updateClock();view.querySelectorAll('[data-app]').forEach(b=>b.onclick=()=>{if(b.dataset.app==='YouTube'){window.location.href='https://youtu.be/_JkW0EuRBVQ?si=WDEy4XDp5ipoU6Go';return;}if(['Samsung Health','Gemini'].includes(b.dataset.app))return;if(b.dataset.app==='전화'){showDialer();return;}active=b.dataset.app;kakaoTab='친구';kakaoPerson='';kakaoRoom='';state='app';draw()});return}
 if(state==='app'&&active==='카카오톡'){
-const friends=['남예준','채봉구','도은호','유하민','내 둥둥이💜','어마마마','동','아바마마'];
+const friends=['남예준','채봉구','도은호','유하민','내 둥둥이💜','어마마마','동생','아바마마'];
 const profileImages={"남예준": "profile-1.jpg", "채봉구": "profile-2.jpg", "도은호": "profile-3.jpg", "유하민": "profile-4.jpg", "어마마마": "profile-5.jpg", "한노아": "profile-6.jpg", "내 둥둥이💜": "ddong-avatar.jpg"};
 const profileAvatar=(name,extra='')=>'<span class="kakao-avatar '+extra+'">'+(profileImages[name]?'<img src="'+profileImages[name]+'" alt="'+name+' 프로필">':'♙')+'</span>';
 
