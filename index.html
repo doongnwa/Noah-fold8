@@ -42,12 +42,57 @@
 .call-name{font-size:clamp(25px,6vw,42px);font-weight:750;margin-top:30px}.call-state{font-size:13px;margin-top:10px;opacity:.85}.call-actions{display:flex;width:100%;justify-content:space-around;margin-top:auto;margin-bottom:44px}.call-actions button{border:0;color:white;width:72px;height:72px;border-radius:50%;font-size:31px;cursor:pointer}.call-answer{background:#0eb56a}.call-decline{background:#e53b35}.call-assist{margin-top:auto;background:#ffffff36;border-radius:25px;padding:12px 22px;font-size:13px}.call-actions{margin-top:35px}.call-ongoing .call-actions{margin-top:auto}.call-overlay .call-hint{font-size:12px;opacity:.8;margin-top:12px}.open .call-name{margin-top:8px}.open .call-overlay{padding-top:28px}.open .call-actions{max-width:440px}
 .call-video-note{font-size:13px;opacity:.8;margin-top:25px}.call-overlay .call-video-placeholder{border-radius:15px;border:1px solid #ffffff66;background:#ffffff15;padding:15px;margin-top:25px}
 .dialer{height:100%;display:flex;flex-direction:column;align-items:center;background:#f8f9fc;color:#222;padding:30px 12px}.dialer h2{margin:12px}.dialer .dial-name{margin:auto;font-size:19px}.dialer button{border:0;border-radius:30px;background:#0eb56a;color:#fff;padding:16px 28px;font-size:17px;margin-bottom:50px}
+
+/* Fold8 layout refinement: reference-sized icons and adaptive Kakao chat */
+.device.open .desktop{padding:17px 27px 39px}
+.device.open .home-widgets{width:52%;height:136px;margin-bottom:19px}
+.device.open .desktop .apps{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));column-gap:13px;row-gap:21px;justify-items:center;align-content:start}
+.device.open .desktop .icon{width:48px;height:48px;border-radius:15px}
+.device.open .desktop .app{width:100%;gap:4px}
+.device.open .desktop .app small{font-size:11px;max-width:100%}
+.device.open .desktop .dock{justify-content:center;gap:25px;margin-top:12px}
+.device.open .desktop .dock .icon{width:45px;height:45px}
+.device.open .desktop .searchbar{height:37px;width:45%;max-width:340px;margin-top:auto}
+.kakao-room-head{background:#696f79;color:#fff;border:0;min-height:65px;padding:10px 13px;gap:10px}
+.kakao-room-head button{color:#fff;font-size:30px;padding:0 4px}
+.kakao-room-head strong{color:#fff;font-size:18px;line-height:1.2}
+.kakao-room-head .room-tool{display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:24px;min-width:29px;cursor:pointer}
+.kakao-room-head .room-tool svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.kakao-room-body:not(.ddong-room){background:#696f79}
+.kakao-room-body{padding:15px 12px 17px;gap:13px}
+.chat-balloon,.kakao-chat .bubble{font-size:15px;line-height:1.5;padding:10px 12px}
+.chat-sender{font-size:13px}.chat-line time{font-size:11px}.chat-face{width:38px;height:38px}
+.kakao-day{font-size:13px}.kakao-room-bottom{border:0;background:#e4e5e7;padding:9px 11px;border-radius:22px;margin:7px 10px 9px;gap:8px;flex-shrink:0}
+.kakao-room-bottom input{border:0;background:transparent;font-size:15px;padding:9px 3px;outline:0}
+.kakao-room-bottom .plus-chat,.kakao-room-bottom .emoji-chat{border-radius:50%;width:32px;height:32px;flex:none;background:#fff;color:#222;font-size:22px;padding:0}
+.kakao-room-bottom .emoji-chat{background:#c9cbce;font-size:20px}
+.kakao-room-bottom #sendReply{background:#fee500;padding:7px 10px;font-size:13px}
+.device.open .kakao-room-head{min-height:53px;padding:7px 13px}
+.device.open .kakao-room-body{gap:9px;padding:11px 14px}
+.device.open .chat-balloon{font-size:16px}
+.device.open .kakao-room-bottom{margin:5px 12px 7px}
+/* Simulated Samsung-style Hangul keyboard; physical keyboard is also supported */
+.sim-keyboard{flex:none;background:#e3e3e5;color:#151515;padding:6px 7px 11px;box-shadow:0 -2px 5px #0001;user-select:none;touch-action:manipulation}
+.sim-keyboard[hidden]{display:none!important}
+.kb-toolbar{height:32px;display:flex;justify-content:space-between;align-items:center;padding:0 8px 5px;font-size:13px}
+.kb-hide{background:none;border:0;font-size:20px;color:#333;cursor:pointer}
+.kb-row{display:flex;justify-content:center;gap:4px;margin-bottom:5px}
+.kb-key{background:#f9f9fa;border:1px solid #fff;border-radius:5px;min-width:0;flex:1;height:36px;font-size:18px;color:#111;box-shadow:0 1px 1px #9996;cursor:pointer;padding:0}
+.kb-key.wide{flex:1.35}.kb-key.space{flex:3.6}.kb-key.special{background:#d5d5d8;font-size:15px}
+.device.open .sim-keyboard{padding:5px 20px 8px}
+.device.open .kb-keys{display:grid;grid-template-columns:1fr 1fr;gap:0 18%;}
+.device.open .kb-key{height:30px;font-size:16px}.device.open .kb-row{gap:3px;margin-bottom:4px}
+.device.open .kb-toolbar{height:27px}
+.kakao:has(.sim-keyboard:not([hidden])) .kakao-room-body{padding-bottom:10px}
+@media(max-width:540px){.device.open .desktop .apps{grid-template-columns:repeat(6,minmax(0,1fr));gap:10px 4px}.device.open .desktop .icon{width:36px;height:36px}.device.open .desktop .app small{font-size:9px}.device.open .home-widgets{height:105px;width:62%}.device.open .desktop .dock .icon{width:35px;height:35px}.device.open .desktop .dock{gap:12px}}
 </style></head><body><div class="stage"><div class="toolbar"><button id="foldBtn">↔ 펼치기</button><button id="resetBtn">🔒 잠금화면</button><span id="mode">커버 화면</span></div><div class="device" id="device"><div class="screen"><div class="status"><span id="simClock">2:10</span><span>▴ ▰ ◕ 85%</span></div><div class="view" id="view"></div><div class="android-nav"><button class="recent" aria-label="최근 앱" disabled>Ⅲ</button><button id="homebar" aria-label="홈으로">□</button><button id="androidBack" aria-label="뒤로">‹</button></div></div></div><div class="note">갤럭시 Z 폴드 스타일 웹 시뮬레이션 · 비밀번호 0210 · 앱의 실제 계정이나 카메라에는 연결되지 않아.</div></div><script>
 const device=document.getElementById('device'),view=document.getElementById('view'),foldBtn=document.getElementById('foldBtn');let state='lock',digits='',opened=false,active='',kakaoTab='친구',kakaoPerson='',kakaoRoom='';
-const iconFiles={'카카오톡':'icon-kakao.png','전화':'icon-phone.png','Samsung Health':'icon-health.png'};
+const iconFiles={'카카오톡':'icon-kakao.png','전화':'icon-phone.png','Samsung Health':'icon-health.png','메시지':'icon-messages.png'};
 const apps=[['카카오톡','TALK','#fee500'],['YouTube','▶','#ff0033'],['전화','☎','#12b960'],['Samsung Health','♟','linear-gradient(135deg,#28dba5,#168be9)'],['Gemini','✦','#f3f4ff'],['갤러리','✿','linear-gradient(135deg,#fc6895,#ff6b39,#9b35f5)']];
 
 const dynamicChat=[];
+const MESSAGE_INTERVAL=1500;
+const VIDEO_AFTER_LAST_MESSAGE=5000;
 let incomingCall=null,callSequenceStarted=false,callTimer=null,videoRequested=false;
 function clockText(){return new Date().toLocaleTimeString('ko-KR',{hour:'numeric',minute:'2-digit',hour12:true});}
 function updateClock(){const c=document.getElementById('simClock');if(c)c.textContent=new Date().toLocaleTimeString('ko-KR',{hour:'numeric',minute:'2-digit',hour12:false});}
@@ -59,8 +104,8 @@ function renderDynamic(m){let t=m.mine?'mine':'theirs';let bubble='<div class="c
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function appendChat(text,mine=false){dynamicChat.push({text,mine,time:clockText()});if(state==='app'&&active==='카카오톡'&&kakaoRoom==='ddong'){draw();const body=view.querySelector('.kakao-room-body');if(body)body.scrollTop=body.scrollHeight;}}
 function sendChatReply(text){text=text.trim();if(!text)return;appendChat(text,true);const compact=text.replace(/\s/g,'');
- if(compact.includes('노아생각'))setTimeout(()=>appendChat('이따 데릴러 갈게요'),700);
- else if(compact.includes('보고싶어')){setTimeout(()=>appendChat('나도 보고 싶구낭'),650);setTimeout(()=>appendChat('안되겠다'),1250);setTimeout(()=>appendChat('기다려봐'),1850);setTimeout(()=>showCall('video'),3100);}
+ if(compact.includes('노아생각'))setTimeout(()=>appendChat('이따 데릴러 갈게요'),MESSAGE_INTERVAL);
+ else if(compact.includes('보고싶어')){setTimeout(()=>appendChat('나도 보고 싶구낭'),MESSAGE_INTERVAL);setTimeout(()=>appendChat('안되겠다'),MESSAGE_INTERVAL*2);setTimeout(()=>appendChat('기다려봐'),MESSAGE_INTERVAL*3);setTimeout(()=>showCall('video'),MESSAGE_INTERVAL*3+VIDEO_AFTER_LAST_MESSAGE);}
 }
 function openDdChat(){active='카카오톡';state='app';kakaoTab='채팅';kakaoPerson='';kakaoRoom='ddong';draw();const body=view.querySelector('.kakao-room-body');if(body)body.scrollTop=body.scrollHeight;}
 function showCall(type='voice'){if(incomingCall)return;incomingCall={type,answered:false};renderCall();}
@@ -75,30 +120,30 @@ function renderCall(){document.querySelector('.call-overlay')?.remove();if(!inco
 }
 function finishCall(answered){const type=incomingCall?.type;incomingCall=null;document.querySelector('.call-overlay')?.remove();openDdChat();
  if(type==='video')return;
- if(answered){['전화 왜 끊어🥲','보고 싶구낭','안되겠다','기다려봐'].forEach((m,i)=>setTimeout(()=>appendChat(m),500+i*700));setTimeout(()=>showCall('video'),4200);}
- else{['노아왔숑','자기야 왜 전화 안받아??😕','일어났더니 내 핸드폰은 없고 둥둥이 핸드폰이 나한테 있네…..ㅎ','모하구 이써'].forEach((m,i)=>setTimeout(()=>appendChat(m),500+i*700));}
+ if(answered){['전화 왜 끊어🥲','보고 싶구낭','안되겠다','기다려봐'].forEach((m,i)=>setTimeout(()=>appendChat(m),MESSAGE_INTERVAL*(i+1)));setTimeout(()=>showCall('video'),MESSAGE_INTERVAL*4+VIDEO_AFTER_LAST_MESSAGE);}
+ else{['노아왔숑','자기야 왜 전화 안받아??😕','일어났더니 내 핸드폰은 없고 둥둥이 핸드폰이 나한테 있네…..ㅎ','모하구 이써'].forEach((m,i)=>setTimeout(()=>appendChat(m),MESSAGE_INTERVAL*(i+1)));}
 }
 function showDialer(){state='app';active='전화';view.innerHTML='<div class="dialer"><h2>전화</h2><div class="dial-name">내 둥둥이💜</div><button id="dialStart">☎ 전화 걸기</button></div>';document.getElementById('dialStart').onclick=()=>showCall('voice');}
 // First incoming call occurs 60 seconds after the visitor opens the site.
 setTimeout(()=>{if(!callSequenceStarted){callSequenceStarted=true;showCall('voice');}},60000);
 
 function draw(){if(state==='lock'){view.innerHTML='<div class="lock" id="unlock"><div class="date">10월 21일 수요일</div><div class="time">오전 2:10</div><div class="hint">화면을 터치하거나 위로 밀어 잠금 해제</div></div>';const el=document.getElementById('unlock');el.onclick=()=>{state='pin';draw()};let y=0;el.addEventListener('touchstart',e=>y=e.touches[0].clientY,{passive:true});el.addEventListener('touchend',e=>{if(y-e.changedTouches[0].clientY>35){state='pin';draw()}},{passive:true});return}
-if(state==='pin'){view.innerHTML='<div class="pin"><div class="title">PIN 입력</div><div class="dots">'+[0,1,2,3].map(i=>'<span class="dot '+(i<digits.length?'filled':'')+'"></span>').join('')+'</div><div class="error" id="error"></div><div class="pad">'+[1,2,3,4,5,6,7,8,9,'',0,''].map(n=>n===''?'<span></span>':'<button data-n="'+n+'">'+n+'</button>').join('')+'</div><div class="pin-foot"><button id="cancel">취소</button><button id="erase">지우기</button></div></div>';view.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{digits+=b.dataset.n;if(digits.length===4){if(digits==='0210'){digits='';state='home';draw()}else{digits='';draw();document.getElementById('error').textContent='비밀번호가 일치하지 않아.'}}else draw()});document.getElementById('cancel').onclick=()=>{digits='';state='lock';draw()};document.getElementById('erase').onclick=()=>{digits=digits.slice(0,-1);draw()};return}
+if(state==='pin'){view.innerHTML='<div class="pin"><div class="title">PIN 입력</div><div class="dots">'+[0,1,2,3].map(i=>'<span class="dot '+(i<digits.length?'filled':'')+'"></span>').join('')+'</div><div class="error" id="error"></div><div class="pad">'+[1,2,3,4,5,6,7,8,9,'',0,''].map(n=>n===''?'<span></span>':'<button data-n="'+n+'">'+n+'</button>').join('')+'</div><div class="pin-foot"><button id="cancel">취소</button><button id="erase">지우기</button></div></div>';view.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{digits+=b.dataset.n;if(digits.length===4){if(digits==='0210'){digits='';state='home';draw()}else{digits='';draw();document.getElementById('error').textContent='비밀번호가 일치하지 않습니다.'}}else draw()});document.getElementById('cancel').onclick=()=>{digits='';state='lock';draw()};document.getElementById('erase').onclick=()=>{digits=digits.slice(0,-1);draw()};return}
 if(state==='home'){
 let icon=([name,symbol,bg])=>'<button class="app" data-app="'+name+'"><span class="icon" style="background:'+bg+';color:'+(name==='카카오톡'?'#371e1e':name==='Gemini'?'#458ce4':'white')+'">'+(iconFiles[name]?'<img class="app-icon-image" src="'+iconFiles[name]+'" alt="">':name==='YouTube'?'<span style="font-size:27px;color:white">▶</span>':name==='갤러리'?'<span class="gallery-flower">✿</span>':name==='헬스'?'<span class="health-person">●</span>':symbol)+'</span><small>'+name+'</small></button>';
-view.innerHTML='<div class="desktop"><div class="home-widgets"><div class="brief"><span class="brief-mark">◒</span><span><b>Now brief</b><small>오늘의 하이라이트</small></span></div><div class="widget-right"><div class="weather">☁️ <span><b>28°</b><small>서울특별시</small></span></div><div class="date-widget"><span>◷</span><span>수요일,<br>10월 21일</span></div></div></div><div class="apps">'+apps.map(icon).join('')+'</div><div class="searchbar"><span class="google-g">G</span><span>⌕</span></div><div class="dock">'+[apps[2]].map(icon).join('')+'</div></div>';
+view.innerHTML='<div class="desktop"><div class="home-widgets"><div class="brief"><span class="brief-mark">◒</span><span><b>Now brief</b><small>오늘의 하이라이트</small></span></div><div class="widget-right"><div class="weather">☁️ <span><b>28°</b><small>서울특별시</small></span></div><div class="date-widget"><span>◷</span><span>수요일,<br>10월 21일</span></div></div></div><div class="apps">'+apps.map(icon).join('')+'</div><div class="searchbar"><span class="google-g">G</span><span>⌕</span></div><div class="dock">'+[['전화','☎','#12b960'],['메시지','●','#278ef0'],['카카오톡','TALK','#fee500'],['갤러리','✿','linear-gradient(135deg,#fc6895,#ff6b39,#9b35f5)']].map(icon).join('')+'</div></div>';
 view.querySelectorAll('[data-app]').forEach(b=>b.onclick=()=>{if(b.dataset.app==='YouTube'){window.location.href='https://youtu.be/_JkW0EuRBVQ?si=WDEy4XDp5ipoU6Go';return;}if(['Samsung Health','Gemini','갤러리'].includes(b.dataset.app))return;if(b.dataset.app==='전화'){showDialer();return;}active=b.dataset.app;kakaoTab='친구';kakaoPerson='';kakaoRoom='';state='app';draw()});return}
 if(state==='app'&&active==='카카오톡'){
-const friends=['남예준','채봉구','도은호','유하민','내 둥둥이💜','어마마마💜','동','아바마마'];
-const profileImages={"남예준": "profile-1.jpg", "채봉구": "profile-2.jpg", "도은호": "profile-3.jpg", "유하민": "profile-4.jpg", "어마마마💜": "profile-5.jpg", "한노아": "profile-6.jpg", "내 둥둥이💜": "ddong-avatar.jpg"};
+const friends=['남예준','채봉구','도은호','유하민','내 둥둥이💜','어마마마','동','아바마마'];
+const profileImages={"남예준": "profile-1.jpg", "채봉구": "profile-2.jpg", "도은호": "profile-3.jpg", "유하민": "profile-4.jpg", "어마마마": "profile-5.jpg", "한노아": "profile-6.jpg", "내 둥둥이💜": "ddong-avatar.jpg"};
 const profileAvatar=(name,extra='')=>'<span class="kakao-avatar '+extra+'">'+(profileImages[name]?'<img src="'+profileImages[name]+'" alt="'+name+' 프로필">':'♙')+'</span>';
 
 const tabs=[['친구','♟'],['채팅','▤'],['오픈채팅','◎'],['쇼핑','▧'],['더보기','•••']];
 let inner='';
 if(kakaoRoom){
- const names={playve:'플레이브',mom:'어마마마💜',hamin:'유하민',ddong:'내 둥둥이💜'};
+ const names={playve:'플레이브',mom:'어마마마',hamin:'유하민',ddong:'내 둥둥이💜'};
  const group=kakaoRoom==='playve';
- const roomHeader='<div class="kakao-room-head"><button id="kakaoRoomBack" aria-label="채팅 목록으로 돌아가기">‹</button><strong>'+names[kakaoRoom]+'</strong>'+(group?'<small>5명</small>':'')+'<span aria-hidden="true">☰</span></div>';
+ const roomHeader='<div class="kakao-room-head"><button id="kakaoRoomBack" aria-label="채팅 목록으로 돌아가기">←</button><strong>'+names[kakaoRoom]+'</strong>'+(group?'<small>5명</small>':'')+'<span class="room-tool" aria-label="검색"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="7"/><path d="m16 16 5 5"/></svg></span><span class="room-tool" aria-label="메뉴">☰</span></div>';
  let roomBody='';
  if(kakaoRoom==='mom')roomBody='<div class="kakao-day">2026년 9월 6일 일요일</div><div class="kakao-sent"><time>오후 9:39</time><video class="kakao-video" controls playsinline preload="metadata" aria-label="어마마마에게 보낸 동영상"><source src="mom-message.mp4" type="video/mp4">동영상 재생을 지원하지 않는 브라우저야.</video></div>';
  else if(kakaoRoom==='ddong'){
@@ -120,20 +165,52 @@ if(kakaoRoom){
  them('전화하장','오후 11:00');
  }else roomBody='<div class="kakao-placeholder">대화 내용은 추후 추가 예정</div>';
  if(kakaoRoom==='ddong')roomBody+=dynamicChat.map(renderDynamic).join('');
- inner=roomHeader+'<div class="kakao-room-body '+(kakaoRoom==='ddong'?'ddong-room':'')+'">'+roomBody+'</div><div class="kakao-room-bottom">＋　메시지 입력 (추후 구현)</div>';
+ inner=roomHeader+'<div class="kakao-room-body '+(kakaoRoom==='ddong'?'ddong-room':'')+'">'+roomBody+'</div>'+(kakaoRoom==='ddong'?'<div class="kakao-room-bottom"><button class="plus-chat" type="button" aria-label="첨부">＋</button><input id="chatReply" type="text" placeholder="메시지 입력" aria-label="메시지 입력" autocomplete="off"><button class="emoji-chat" type="button" aria-label="이모티콘">☻</button><button id="sendReply" type="button">전송</button></div><div class="sim-keyboard" id="simKeyboard" hidden></div>':'<div class="kakao-room-bottom">메시지 입력 (추후 구현)</div>');
 }else if(kakaoPerson){inner='<div class="kakao-top"><button class="kakao-back" id="kakaoBack" aria-label="뒤로">‹</button><span>프로필</span><span></span></div><div class="kakao-profile">'+profileAvatar(kakaoPerson)+'<strong>'+kakaoPerson+'</strong><span class="pending">프로필</span></div>'}
 else if(kakaoTab==='친구')inner='<div class="kakao-top"><h2>친구</h2><div class="kakao-tools"><span>⌕</span><span>♫</span><span>⚙</span></div></div><div class="kakao-list"><button class="kakao-row self" data-person="한노아">'+profileAvatar('한노아')+'<span class="kakao-name">한노아</span></button><div class="kakao-section">친구 '+friends.length+'</div>'+friends.map(name=>'<button class="kakao-row" data-person="'+name+'">'+profileAvatar(name)+'<span class="kakao-name">'+name+'</span></button>').join('')+'</div>';
 else {
- const rooms=[['playve','플레이브','단체 채팅 · 남예준, 채봉구, 도은호, 유하민','고정','group','♟'],['mom','어마마마💜','동영상','9월 6일','mom','♥'],['hamin','유하민','대화 내용 준비 중','','hamin','♙'],['ddong','내 둥둥이💜','전화하장','9월 24일','ddong','♥']];
- inner='<div class="kakao-top"><h2>채팅</h2><div class="kakao-tools"><span>⌕</span><span>＋</span><span>⚙</span></div></div><div class="kakao-list">'+rooms.map(([id,name,preview,date,kind,symbol])=>'<button class="kakao-chat-row" data-room="'+id+'"><span class="kakao-avatar '+kind+'">'+symbol+'</span><span class="chat-info"><span class="chat-name">'+(id==='playve'?'📌 ':'')+name+'</span><div class="chat-preview">'+preview+'</div></span><span class="chat-meta">'+date+'</span></button>').join('')+'</div>';
+ const rooms=[['playve','플레이브','단체 채팅 · 남예준, 채봉구, 도은호, 유하민','고정','group','♟'],['mom','어마마마','동영상','9월 6일','mom','♥'],['hamin','유하민','대화 내용 준비 중','','hamin','♙'],['ddong','내 둥둥이💜','전화하장','9월 24일','ddong','♥']];
+ inner='<div class="kakao-top"><h2>채팅</h2><div class="kakao-tools"><span>⌕</span><span>＋</span><span>⚙</span></div></div><div class="kakao-list">'+rooms.map(([id,name,preview,date,kind,symbol])=>'<button class="kakao-chat-row" data-room="'+id+'"><span class="kakao-avatar '+kind+'">'+'<img src="'+({playve:'playve-group.jpg',mom:'profile-5.jpg',hamin:'profile-4.jpg',ddong:'ddong-avatar.jpg'}[id])+'" alt="프로필">'+'</span><span class="chat-info"><span class="chat-name">'+(id==='playve'?'📌 ':'')+name+'</span><div class="chat-preview">'+preview+'</div></span><span class="chat-meta">'+date+'</span></button>').join('')+'</div>';
 }
 const nav='<nav class="kakao-nav" aria-label="카카오톡 하단 메뉴">'+tabs.map(([label,icon])=>'<button class="kakao-tab '+(label===kakaoTab?'selected':'')+'" data-tab="'+label+'" '+(!['친구','채팅'].includes(label)?'disabled aria-label="'+label+' (준비 중)"':'')+'><span class="tabicon">'+icon+'</span><span>'+label+'</span></button>').join('')+'</nav>';
 view.innerHTML='<div class="kakao">'+inner+((kakaoPerson||kakaoRoom)?'':nav)+'</div>';
 view.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{kakaoTab=b.dataset.tab;kakaoPerson='';kakaoRoom='';draw()});
 view.querySelectorAll('[data-person]').forEach(b=>b.onclick=()=>{kakaoPerson=b.dataset.person;draw()});
-view.querySelectorAll('[data-room]').forEach(b=>b.onclick=()=>{kakaoRoom=b.dataset.room;draw()});const roomBack=view.querySelector('#kakaoRoomBack');if(roomBack)roomBack.onclick=()=>{kakaoRoom='';draw()};const send=view.querySelector('#sendReply');if(send){const input=view.querySelector('#chatReply');send.onclick=()=>sendChatReply(input.value);input.onkeydown=e=>{if(e.key==='Enter')sendChatReply(input.value)};}const back=view.querySelector('#kakaoBack');if(back)back.onclick=()=>{kakaoPerson='';draw()};return;
+view.querySelectorAll('[data-room]').forEach(b=>b.onclick=()=>{kakaoRoom=b.dataset.room;draw()});const roomBack=view.querySelector('#kakaoRoomBack');if(roomBack)roomBack.onclick=()=>{kakaoRoom='';draw()};const send=view.querySelector('#sendReply');if(send){const input=view.querySelector('#chatReply');send.onclick=()=>{sendChatReply(input.value);input.value='';input.focus()};setupSimKeyboard(input);input.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();send.click()}};}const back=view.querySelector('#kakaoBack');if(back)back.onclick=()=>{kakaoPerson='';draw()};return;
 }
 if(state==='app'&&active==='전화'){showDialer();return;}
 if(state==='app'){let content='';if(active==='갤러리')content='<div class="muted" style="margin-bottom:14px">사진을 추가하면 이곳에 표시돼.</div><div class="photos">'+Array.from({length:9},(_,i)=>'<div>사진 '+(i+1)+'</div>').join('')+'</div>';else if(active==='메모')content='<div class="muted" style="margin-bottom:12px">임시 메모 · 새로고침하면 초기화돼</div><textarea class="memo" placeholder="여기에 원하는 메모를 입력해..."></textarea>';else if(active==='메시지'||active==='카카오톡'||active==='Bubble'||active==='Weverse')content='<div class="card"><strong>대화 화면</strong><p class="muted">원하는 인물과 대화 내용을 추후 추가할 수 있어.</p></div><div class="msg">안녕! 👋</div><div class="msg mine">반가워!</div>';else if(active==='카메라')content='<div class="camera"><div>📷 카메라 미리보기</div><div class="toast">웹 데모에서는 실제 촬영하지 않아</div><button class="shutter" id="shutter" aria-label="셔터"></button><div class="toast" id="cameraToast"></div></div>';else if(active==='YouTube')content='<div class="card">▶️ <strong>동영상 목록</strong><p class="muted">원하는 영상 링크나 썸네일을 추가할 수 있어.</p></div>';else if(active==='Instagram')content='<div class="card"><strong>프로필 · 게시물</strong><p class="muted">원하는 프로필과 피드를 구성할 수 있어.</p></div>';else if(active==='Gemini')content='<div class="card">✦ <strong>Gemini 스타일 화면</strong><p class="muted">원하는 채팅 내용을 배치할 수 있어. 실제 AI 서비스와는 연결되지 않아.</p></div>';view.innerHTML='<div class="page"><div class="pagehead"><button id="back" aria-label="뒤로">‹</button><strong>'+active+'</strong></div><div class="pagebody" style="'+(active==='카메라'?'padding:0;display:flex;':'')+'">'+content+'</div></div>';document.getElementById('back').onclick=()=>{state='home';draw()};if(active==='카메라')document.getElementById('shutter').onclick=()=>document.getElementById('cameraToast').textContent='촬영 기능은 콘텐츠 추가 단계에서 결정할 수 있어.'}}
-foldBtn.onclick=()=>{opened=!opened;device.classList.toggle('open',opened);foldBtn.textContent=opened?'↔ 접기':'↔ 펼치기';document.getElementById('mode').textContent=opened?'내부 화면':'커버 화면';draw()};document.getElementById('resetBtn').onclick=()=>{state='lock';digits='';draw()};document.getElementById('homebar').onclick=()=>{state='home';kakaoPerson='';kakaoRoom='';draw()};document.getElementById('androidBack').onclick=()=>{if(state==='app'&&active==='카카오톡'){if(kakaoRoom)kakaoRoom='';else if(kakaoPerson)kakaoPerson='';else if(kakaoTab!=='친구')kakaoTab='친구';else state='home';}else if(state==='app')state='home';else if(state==='pin')state='lock';draw()};draw();
+
+
+function composeHangul(raw){
+ const ini='ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ',vow='ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ',fin=' ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ';
+ const chars=[...raw];let out='';
+ for(let i=0;i<chars.length;){let a=ini.indexOf(chars[i]);if(a<0||i+1>=chars.length||vow.indexOf(chars[i+1])<0){out+=chars[i++];continue}
+ let b=vow.indexOf(chars[i+1]);let f=0,used=2;
+ if(i+2<chars.length){const c=fin.indexOf(chars[i+2]);if(c>0&&(i+3>=chars.length||vow.indexOf(chars[i+3])<0)){f=c;used=3}}
+ out+=String.fromCharCode(0xAC00+(a*21+b)*28+f);i+=used;
+ }
+ return out;
+}
+
+function setupSimKeyboard(input,showNow=false){
+ const kb=document.getElementById('simKeyboard');if(!kb)return;let keyboardRaw=input.value;
+ const left=[['1','2','3','4','5','6','7','8','9','0'],['ㅂ','ㅈ','ㄷ','ㄱ','ㅅ','ㅛ','ㅕ','ㅑ','ㅐ','ㅔ'],['ㅁ','ㄴ','ㅇ','ㄹ','ㅎ','ㅗ','ㅓ','ㅏ','ㅣ'],['⇧','ㅋ','ㅌ','ㅊ','ㅍ','ㅠ','ㅜ','ㅡ','⌫'],['!#1','한/영','☻','space','.', '↵']];
+ const folded=left.map(row=>'<div class="kb-row">'+row.map(k=>'<button type="button" class="kb-key '+(['⇧','⌫','!#1','한/영','↵'].includes(k)?'special ':'')+(k==='space'?'space ':(['⇧','⌫'].includes(k)?'wide':''))+'" data-key="'+k+'">'+(k==='space'?'ㅤ':k)+'</button>').join('')+'</div>').join('');
+ kb.innerHTML='<div class="kb-toolbar"><button class="kb-hide" type="button" aria-label="키보드 닫기">▾</button><span>▤ &nbsp; 붙여넣기</span><span>⚙</span></div><div class="kb-keys">'+(opened?'<div>'+left.map(row=>'<div class="kb-row">'+row.slice(0,Math.ceil(row.length/2)).map(k=>'<button type="button" class="kb-key '+(k==='space'?'space':'')+'" data-key="'+k+'">'+(k==='space'?'ㅤ':k)+'</button>').join('')+'</div>').join('')+'</div><div>'+left.map(row=>'<div class="kb-row">'+row.slice(Math.ceil(row.length/2)).map(k=>'<button type="button" class="kb-key '+(k==='space'?'space':'')+'" data-key="'+k+'">'+(k==='space'?'ㅤ':k)+'</button>').join('')+'</div>').join('')+'</div>':folded)+'</div>';
+ kb.querySelector('.kb-hide').onclick=()=>{kb.hidden=true;input.blur()};
+ kb.querySelectorAll('[data-key]').forEach(btn=>btn.onclick=()=>{
+ const key=btn.dataset.key;if(key==='↵'){document.getElementById('sendReply')?.click();return}
+ if(key==='⌫'){keyboardRaw=keyboardRaw.slice(0,-1);input.value=composeHangul(keyboardRaw);return}
+ if(key==='한/영'||key==='⇧'||key==='!#1')return;
+ if(key==='☻'){keyboardRaw+='😊';input.value=composeHangul(keyboardRaw);return}
+ keyboardRaw+=key==='space'?' ':key;input.value=composeHangul(keyboardRaw);
+ });
+ input.addEventListener('input',()=>{keyboardRaw=input.value});
+ input.addEventListener('focus',()=>{kb.hidden=false});
+ input.addEventListener('click',()=>{kb.hidden=false});
+ if(showNow)kb.hidden=false;
+}
+
+foldBtn.onclick=()=>{const wasKeyboard=!!document.querySelector('#simKeyboard:not([hidden])');opened=!opened;device.classList.toggle('open',opened);foldBtn.textContent=opened?'↔ 접기':'↔ 펼치기';document.getElementById('mode').textContent=opened?'내부 화면':'커버 화면';draw();if(wasKeyboard){const i=document.getElementById('chatReply');if(i){document.getElementById('simKeyboard').hidden=false;setupSimKeyboard(i,true)}}};document.getElementById('resetBtn').onclick=()=>{state='lock';digits='';draw()};document.getElementById('homebar').onclick=()=>{state='home';kakaoPerson='';kakaoRoom='';draw()};document.getElementById('androidBack').onclick=()=>{if(state==='app'&&active==='카카오톡'){if(kakaoRoom)kakaoRoom='';else if(kakaoPerson)kakaoPerson='';else if(kakaoTab!=='친구')kakaoTab='친구';else state='home';}else if(state==='app')state='home';else if(state==='pin')state='lock';draw()};draw();
 </script></body></html>
