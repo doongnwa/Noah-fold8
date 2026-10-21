@@ -128,6 +128,17 @@
 .device:has(.lock) .view{background:#000!important}
 .device:has(.lock) .android-nav{background:#000!important}
 @media(max-height:750px){.device{width:min(295px,85vw,calc((100dvh - 110px)*.448))}.device.open{width:min(620px,96vw,calc((100dvh - 110px)*1.11))}}
+</style><style>
+/* Dimensions measured from the user's Fold8 reference screenshots:
+   closed approx 539 × 812 (0.664), open approx 1324 × 1005 (1.317). */
+.device:not(.open){width:min(535px,92vw,calc((100dvh - 125px)*.664))!important;aspect-ratio:539 / 812!important;border-radius:13px!important;border-width:6px!important}
+.device.open{width:min(1320px,96vw,calc((100dvh - 125px)*1.317))!important;aspect-ratio:1324 / 1005!important;border-radius:12px!important;border-width:6px!important}
+.device:not(.open):before{top:13px;left:50%;width:11px;height:11px}
+.device.open:before{top:13px;left:72%;width:11px;height:11px}
+.device.open:after{background:#00000025;opacity:1}
+.device:has(.lock) .status{background:#000!important}
+.device:has(.lock) .lock{background:#000!important}
+@media(max-height:750px){.device:not(.open){width:min(420px,92vw,calc((100dvh - 90px)*.664))!important}.device.open{width:min(1100px,96vw,calc((100dvh - 90px)*1.317))!important}}
 </style></head><body><div class="stage"><div class="toolbar"><button id="foldBtn">↔ 펼치기</button><button id="resetBtn">🔒 잠금화면</button><span id="mode">커버 화면</span></div><div class="device" id="device"><div class="screen"><div class="status"><span id="simClock">2:10</span><span>▴ ▰ ◕ 85%</span></div><div class="view" id="view"></div><div class="android-nav"><button class="recent" aria-label="최근 앱" disabled>Ⅲ</button><button id="homebar" aria-label="홈으로">□</button><button id="androidBack" aria-label="뒤로">‹</button></div></div></div><div class="note">갤럭시 Z 폴드 스타일 웹 시뮬레이션 · 비밀번호 0210 · 앱의 실제 계정이나 카메라에는 연결되지 않아.</div></div><script>
 const device=document.getElementById('device'),view=document.getElementById('view'),foldBtn=document.getElementById('foldBtn');let state='lock',digits='',opened=false,active='',kakaoTab='친구',kakaoPerson='',kakaoRoom='';
 const iconFiles={'카카오톡':'icon-kakao.png','전화':'icon-phone.png','Samsung Health':'icon-health.png','메시지':'icon-messages.png'};
