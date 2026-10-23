@@ -148,6 +148,24 @@
 /* Precisely center the KakaoTalk app artwork in both the dock and app grid. */
 .app[data-app="카카오톡"] .icon{display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important;line-height:1!important}
 .app[data-app="카카오톡"] .app-icon-image{position:relative!important;display:block!important;width:100%!important;height:100%!important;object-fit:contain!important;object-position:50% 50%!important;margin:0!important;transform:translateY(-3px)!important}
+</style><style>
+/* Fold8 inner-screen: fit PIN controls and desktop into the landscape viewport. */
+.device.open:has(.pin) .pin{justify-content:flex-start;gap:clamp(3px,1.1vh,10px);padding:clamp(3px,1vh,10px) 12px 8px;overflow-y:auto;min-height:0}
+.device.open:has(.pin) .pin .title{font-size:clamp(11px,1.9vh,16px);line-height:1.1}
+.device.open:has(.pin) .pin .dots{gap:12px}
+.device.open:has(.pin) .pin .dot{width:9px;height:9px}
+.device.open:has(.pin) .pin .pad{grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(3px,1vh,9px) clamp(12px,3vw,25px);width:min(57%,280px);margin:auto}
+.device.open:has(.pin) .pin .pad button{width:min(100%,clamp(31px,7.2vh,58px));height:clamp(31px,7.2vh,58px);font-size:clamp(17px,3.3vh,27px);justify-self:center}
+.device.open:has(.pin) .pin .pin-foot{margin-top:0}
+.device.open .desktop{padding:clamp(8px,1.8vh,16px) clamp(15px,3vw,30px) 30px;overflow:hidden}
+.device.open .home-widgets{height:clamp(60px,20%,110px);width:min(46%,300px);margin-bottom:clamp(7px,2vh,17px)}
+.device.open .desktop .apps{grid-template-columns:repeat(6,minmax(0,1fr));column-gap:clamp(5px,1.8vw,18px);row-gap:clamp(4px,1vh,11px);flex:0 1 auto}
+.device.open .desktop .icon{width:clamp(30px,7.5vh,54px);height:clamp(30px,7.5vh,54px);border-radius:clamp(9px,2vh,16px)}
+.device.open .desktop .app small{font-size:clamp(8px,1.65vh,11px);line-height:1.1}
+.device.open .desktop .searchbar{height:clamp(25px,6vh,38px);width:48%;margin-top:auto}
+.device.open .desktop .dock{gap:clamp(8px,3vw,27px);margin-top:clamp(3px,1vh,10px)}
+.device.open .desktop .dock .icon{width:clamp(27px,6vh,44px);height:clamp(27px,6vh,44px)}
+@media(max-width:540px){.device.open .desktop .apps{grid-template-columns:repeat(6,minmax(0,1fr))}.device.open .home-widgets{width:49%}.device.open .desktop .icon{width:clamp(25px,6.5vh,42px);height:clamp(25px,6.5vh,42px)}}
 </style></head><body><div class="stage"><div class="toolbar"><button id="foldBtn">↔ 펼치기</button><button id="resetBtn">🔒 잠금화면</button><span id="mode">커버 화면</span></div><div class="device" id="device"><div class="screen"><div class="status"><span id="simClock">2:10</span><span>▴ ▰ ◕ 85%</span></div><div class="view" id="view"></div><div class="android-nav"><button class="recent" aria-label="최근 앱" disabled>Ⅲ</button><button id="homebar" aria-label="홈으로">□</button><button id="androidBack" aria-label="뒤로">‹</button></div></div></div><div class="note">갤럭시 Z 폴드 스타일 웹 시뮬레이션 · 비밀번호 0210 · 앱의 실제 계정이나 카메라에는 연결되지 않아.</div></div><script>
 const device=document.getElementById('device'),view=document.getElementById('view'),foldBtn=document.getElementById('foldBtn');let state='lock',digits='',opened=false,active='',kakaoTab='친구',kakaoPerson='',kakaoRoom='';
 const iconFiles={'카카오톡':'icon-kakao.png','전화':'icon-phone.png','Samsung Health':'icon-health.png','메시지':'icon-messages.png'};
