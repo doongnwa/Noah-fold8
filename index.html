@@ -183,7 +183,30 @@
 .call-incoming-head{margin:auto 0 0;display:flex;flex-direction:column;gap:15px}.call-incoming-actions{margin:auto 0 13%;display:flex;justify-content:space-evenly}
 .device.open .call-connected-head{height:32%;padding-top:1%;gap:5px}.device.open .call-control-grid{width:min(40%,350px);gap:clamp(7px,1.5vh,15px) 18px}.device.open .call-control-icon{width:clamp(40px,9vh,66px);height:clamp(40px,9vh,66px);font-size:24px}.device.open .call-bottom{height:21%}.device.open .call-contact{font-size:clamp(24px,4vw,42px)}
 .call-keypad{position:absolute;inset:8% 0 0;background:#191724ee;z-index:5;padding:10px 20%;display:flex;flex-direction:column}.call-keypad>div{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;flex:1}.call-keypad button{border:0;background:#ffffff22;color:white;border-radius:14px;font-size:22px}.call-keypad .close-keypad{font-size:14px;margin-bottom:10px;padding:10px}
-</style><style>.call-bottom .call-decline .end-phone-icon{display:inline-block;transform:rotate(135deg);line-height:1}.call-bottom .call-decline{transform:none!important}</style><style>.photos video{background:#24232b;object-fit:cover}.photos video[data-preview]{background:linear-gradient(140deg,#363147,#1e1c25)}</style></head><body><div class="stage"><div class="toolbar"><button id="foldBtn">↔ 펼치기</button><button id="resetBtn">🔒 잠금화면</button><span id="mode">커버 화면</span></div><div class="device" id="device"><div class="screen"><div class="status"><span id="simClock">2:10</span><span>▴ ▰ ◕ 85%</span></div><div class="view" id="view"></div><div class="android-nav"><button class="recent" aria-label="최근 앱" disabled>Ⅲ</button><button id="homebar" aria-label="홈으로">□</button><button id="androidBack" aria-label="뒤로">‹</button></div></div></div><div class="note">Noah’s galaxy fold8</div></div><script>
+</style><style>.call-bottom .call-decline .end-phone-icon{display:inline-block;transform:rotate(135deg);line-height:1}.call-bottom .call-decline{transform:none!important}</style><style>.photos video{background:#24232b;object-fit:cover}.photos video[data-preview]{background:linear-gradient(140deg,#363147,#1e1c25)}</style><style>
+/* Unfolded desktop: reserve independent space for widgets, icons and dock. */
+.device.open .desktop{box-sizing:border-box;gap:0;padding:clamp(9px,1.6vh,16px) clamp(13px,2.7vw,26px) clamp(18px,4vh,29px)}
+.device.open .home-widgets{height:clamp(96px,30vh,150px);min-height:0;width:min(53%,340px);margin-bottom:clamp(12px,3vh,20px);gap:8px;flex-shrink:0}
+.device.open .brief{min-height:0;padding:clamp(6px,1.4vh,12px);border-radius:19px}
+.device.open .brief-mark{font-size:clamp(13px,3vh,24px)}
+.device.open .brief b{font-size:clamp(11px,2.4vh,15px)}
+.device.open .brief small,.device.open .weather small{font-size:clamp(8px,1.7vh,11px);line-height:1.1}
+.device.open .widget-right{min-height:0;gap:6px}
+.device.open .weather,.device.open .date-widget{min-height:0;flex:1;padding:5px 8px;border-radius:28px;overflow:hidden}
+.device.open .weather strong,.device.open .date-widget strong{font-size:clamp(11px,2.8vh,18px);line-height:1.1}
+.device.open .desktop .apps{grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(4px,1.4vh,11px) clamp(4px,1.2vw,12px);flex:0 0 auto;align-content:start}
+.device.open .desktop .app{min-width:0;gap:3px}
+.device.open .desktop .icon{width:clamp(27px,7vh,46px);height:clamp(27px,7vh,46px);border-radius:clamp(8px,1.8vh,13px)}
+.device.open .desktop .app small{font-size:clamp(8px,1.65vh,11px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.device.open .desktop .searchbar{flex:0 0 auto;height:clamp(22px,5.5vh,34px);width:47%;margin-top:auto;margin-bottom:clamp(3px,1vh,9px)}
+.device.open .desktop .dock{flex:0 0 auto;margin-top:0;gap:clamp(12px,3vw,26px)}
+.device.open .desktop .dock .icon{width:clamp(26px,6.5vh,43px);height:clamp(26px,6.5vh,43px)}
+@keyframes simAppEnter{from{opacity:.65;transform:translateY(13px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes simChatArrive{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.screen .page{animation:simAppEnter .34s cubic-bezier(.2,.78,.2,1) both}
+.kakao-room-body .chat-line.chat-arriving{animation:simChatArrive .36s cubic-bezier(.2,.78,.2,1) both}
+@media(prefers-reduced-motion:reduce){.screen .page,.kakao-room-body .chat-line.chat-arriving{animation:none}}
+</style></head><body><div class="stage"><div class="toolbar"><button id="foldBtn">↔ 펼치기</button><button id="resetBtn">🔒 잠금화면</button><span id="mode">커버 화면</span></div><div class="device" id="device"><div class="screen"><div class="status"><span id="simClock">2:10</span><span>▴ ▰ ◕ 85%</span></div><div class="view" id="view"></div><div class="android-nav"><button class="recent" aria-label="최근 앱" disabled>Ⅲ</button><button id="homebar" aria-label="홈으로">□</button><button id="androidBack" aria-label="뒤로">‹</button></div></div></div><div class="note">Noah’s galaxy fold8</div></div><script>
 const device=document.getElementById('device'),view=document.getElementById('view'),foldBtn=document.getElementById('foldBtn');let state='lock',digits='',opened=false,active='',kakaoTab='친구',kakaoPerson='',kakaoRoom='';
 const iconFiles={'카카오톡':'icon-kakao.png','전화':'icon-phone.png','Samsung Health':'icon-health.png','메시지':'icon-messages.png'};
 const apps=[['카카오톡','TALK','#fee500'],['YouTube','▶','#ff0033'],['전화','☎','#12b960'],['Samsung Health','♟','linear-gradient(135deg,#28dba5,#168be9)'],['Gemini','✦','#f3f4ff'],['갤러리','✿','linear-gradient(135deg,#fc6895,#ff6b39,#9b35f5)']];
@@ -201,7 +224,7 @@ function renderDynamic(m){let t=m.mine?'mine':'theirs';let bubble='<div class="c
 }
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function showKakaoBanner(message){const screen=device.querySelector('.screen');if(!screen)return;screen.querySelector('.kakao-banner')?.remove();const banner=document.createElement('button');banner.type='button';banner.className='kakao-banner';banner.innerHTML='<span class="banner-kakao">TALK</span><span class="banner-copy"><strong>내 둥둥이💜 <small>지금</small></strong><span>'+escapeHtml(message)+'</span></span><span class="banner-chevron">⌄</span>';screen.appendChild(banner);requestAnimationFrame(()=>banner.classList.add('visible'));banner.onclick=()=>{banner.remove();openDdChat()};clearTimeout(notificationTimeout);notificationTimeout=setTimeout(()=>{banner.classList.remove('visible');setTimeout(()=>banner.remove(),350)},4200);}
-function appendChat(text,mine=false){const reading=state==='app'&&active==='카카오톡'&&kakaoRoom==='ddong';dynamicChat.push({text,mine,time:clockText(),date:new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'long'})});if(!mine&&!reading){unreadDd++;showKakaoBanner(text)}if(reading){unreadDd=0;draw();const body=view.querySelector('.kakao-room-body');if(body)body.scrollTop=body.scrollHeight;}else if(state==='app'&&active==='카카오톡'&&!kakaoRoom){draw();}}
+function appendChat(text,mine=false){const reading=state==='app'&&active==='카카오톡'&&kakaoRoom==='ddong';dynamicChat.push({text,mine,time:clockText(),date:new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'long'})});if(!mine&&!reading){unreadDd++;showKakaoBanner(text)}if(reading){unreadDd=0;draw();const body=view.querySelector('.kakao-room-body');if(body){const lines=body.querySelectorAll('.chat-line');const last=lines[lines.length-1];if(last)last.classList.add('chat-arriving');body.scrollTop=body.scrollHeight;}}else if(state==='app'&&active==='카카오톡'&&!kakaoRoom){draw();}}
 let awaitingPostCallReply=false;
 function sendChatReply(text){text=text.trim();if(!text)return;appendChat(text,true);const compact=text.replace(/\s/g,'');
  if(awaitingPostCallReply){
