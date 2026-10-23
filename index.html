@@ -189,7 +189,7 @@ const iconFiles={'카카오톡':'icon-kakao.png','전화':'icon-phone.png','Sams
 const apps=[['카카오톡','TALK','#fee500'],['YouTube','▶','#ff0033'],['전화','☎','#12b960'],['Samsung Health','♟','linear-gradient(135deg,#28dba5,#168be9)'],['Gemini','✦','#f3f4ff'],['갤러리','✿','linear-gradient(135deg,#fc6895,#ff6b39,#9b35f5)']];
 
 const dynamicChat=[];let unreadDd=0,notificationTimeout=null;
-const MESSAGE_INTERVAL=2000;
+const MESSAGE_INTERVAL=3000;
 const VIDEO_AFTER_LAST_MESSAGE=5000;
 let incomingCall=null,callSequenceStarted=false,callTimer=null,videoRequested=false;
 function clockText(){return new Date().toLocaleTimeString('ko-KR',{hour:'numeric',minute:'2-digit',hour12:true});}
@@ -219,7 +219,7 @@ function renderCall(){
  device.querySelector('.screen').append(el);
  if(c.answered){const timerLabel=el.querySelector('.call-timer');const timer=setInterval(()=>{if(!el.isConnected||incomingCall!==c){clearInterval(timer);return}timerLabel.textContent=elapsed()},1000);
  el.querySelectorAll('.call-control').forEach(btn=>btn.onclick=()=>{btn.classList.toggle('selected');if(btn.dataset.control==='4'){const pad=el.querySelector('.call-keypad');if(pad)pad.remove();else{const p=document.createElement('div');p.className='call-keypad';p.innerHTML='<button class="close-keypad">닫기 ×</button><div>'+Array.from('123456789*0#').map(k=>'<button>'+k+'</button>').join('')+'</div>';el.append(p);p.querySelector('.close-keypad').onclick=()=>p.remove()}}});
- const audio=document.getElementById('callVoiceAudio');if(audio){audio.currentTime=0;audio.play().catch(()=>{});}
+ const audio=document.getElementById('callVoiceAudio');if(audio&&c.type==='voice'){audio.currentTime=0;audio.play().catch(()=>{});}
  }else{const audio=document.getElementById('callVoiceAudio');if(audio)audio.pause()}
  const answer=el.querySelector('#callAnswer'),reject=el.querySelector('#callReject'),end=el.querySelector('#callEnd');
  if(answer)answer.onclick=()=>{incomingCall.answered=true;incomingCall.startedAt=Date.now();renderCall()};
@@ -227,7 +227,7 @@ function renderCall(){
  if(end)end.onclick=()=>{const audio=document.getElementById('callVoiceAudio');if(audio){audio.pause();audio.currentTime=0}finishCall(true)};
 }
 function finishCall(answered){const type=incomingCall?.type;incomingCall=null;document.querySelector('.call-overlay')?.remove();state='home';active='';kakaoRoom='';kakaoPerson='';draw();
- if(type==='video')return;
+ if(type==='video'){if(answered)setTimeout(()=>appendChat('오늘 하루도 너무 수고한 우리 자기 내가 많이 사랑하는 거 알지? 꿈에서 만나자 잘자요 사랑해💜'),5000);return;}
  if(answered){['둥둥아 전화 왜 끊어🥲','일어났더니 내 핸드폰은 없고 둥둥이 핸드폰이 나한테 있네…..ㅎ','집에 잘 들어갔어?','전화할까? 보고 싶구낭','안되겠다','기다려봐'].forEach((m,i)=>setTimeout(()=>appendChat(m),MESSAGE_INTERVAL*(i+1)));setTimeout(()=>showCall('video'),MESSAGE_INTERVAL*6+VIDEO_AFTER_LAST_MESSAGE);}
  else{['노아왔숑','자기야 왜 전화 안받아??😕','일어났더니 내 핸드폰은 없고 둥둥이 핸드폰이 나한테 있네…..ㅎ','모하구 이써'].forEach((m,i)=>setTimeout(()=>appendChat(m),MESSAGE_INTERVAL*(i+1)));}
 }
@@ -352,4 +352,4 @@ function setupSimKeyboard(input,showNow=false){
 }
 
 foldBtn.onclick=()=>{if(device.classList.contains('folding'))return;const wasKeyboard=!!document.querySelector('#simKeyboard:not([hidden])');device.classList.add('folding');opened=!opened;device.classList.toggle('open',opened);foldBtn.textContent=opened?'↔ 접기':'↔ 펼치기';document.getElementById('mode').textContent=opened?'내부 화면':'커버 화면';draw();updateClock();if(wasKeyboard){const i=document.getElementById('chatReply');if(i){document.getElementById('simKeyboard').hidden=false;setupSimKeyboard(i,true)}}setTimeout(()=>device.classList.remove('folding'),760);};document.getElementById('resetBtn').onclick=()=>{state='lock';digits='';draw()};document.getElementById('homebar').onclick=()=>{state='home';kakaoPerson='';kakaoRoom='';draw()};document.getElementById('androidBack').onclick=()=>{if(state==='app'&&active==='카카오톡'){if(kakaoRoom)kakaoRoom='';else if(kakaoPerson)kakaoPerson='';else if(kakaoTab!=='친구')kakaoTab='친구';else state='home';}else if(state==='app')state='home';else if(state==='pin')state='lock';draw()};draw();
-</script></body></html>
+</script><audio id="callVoiceAudio" preload="auto" src="%E1%84%8C%E1%85%A6%E1%84%86%E1%85%A9%E1%86%A8%20%E1%84%8B%E1%85%A5%E1%86%B9%E1%84%8B%E1%85%B3%E1%86%B7.mp4"></audio></body></html>
