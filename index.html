@@ -202,7 +202,16 @@ function renderDynamic(m){let t=m.mine?'mine':'theirs';let bubble='<div class="c
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function showKakaoBanner(message){const screen=device.querySelector('.screen');if(!screen)return;screen.querySelector('.kakao-banner')?.remove();const banner=document.createElement('button');banner.type='button';banner.className='kakao-banner';banner.innerHTML='<span class="banner-kakao">TALK</span><span class="banner-copy"><strong>내 둥둥이💜 <small>지금</small></strong><span>'+escapeHtml(message)+'</span></span><span class="banner-chevron">⌄</span>';screen.appendChild(banner);requestAnimationFrame(()=>banner.classList.add('visible'));banner.onclick=()=>{banner.remove();openDdChat()};clearTimeout(notificationTimeout);notificationTimeout=setTimeout(()=>{banner.classList.remove('visible');setTimeout(()=>banner.remove(),350)},4200);}
 function appendChat(text,mine=false){const reading=state==='app'&&active==='카카오톡'&&kakaoRoom==='ddong';dynamicChat.push({text,mine,time:clockText(),date:new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'long'})});if(!mine&&!reading){unreadDd++;showKakaoBanner(text)}if(reading){unreadDd=0;draw();const body=view.querySelector('.kakao-room-body');if(body)body.scrollTop=body.scrollHeight;}else if(state==='app'&&active==='카카오톡'&&!kakaoRoom){draw();}}
+let awaitingPostCallReply=false;
 function sendChatReply(text){text=text.trim();if(!text)return;appendChat(text,true);const compact=text.replace(/\s/g,'');
+ if(awaitingPostCallReply){
+  if(/^(응+|웅+|앙+|보고싶어+)[!?.~♥♡💜]*$/.test(compact)){
+   awaitingPostCallReply=false;
+   ['방금 전화했는데 또 보고싶어?','안되겠다','기다려봐'].forEach((m,i)=>setTimeout(()=>appendChat(m),MESSAGE_INTERVAL*(i+1)));
+   setTimeout(()=>showCall('video'),MESSAGE_INTERVAL*4);
+  }
+  return;
+ }
  if(compact.includes('노아생각')){['이따 데릴러 갈게요','보고 싶다','안되겠다','기다려봐'].forEach((m,i)=>setTimeout(()=>appendChat(m),MESSAGE_INTERVAL*(i+1)));setTimeout(()=>showCall('video'),MESSAGE_INTERVAL*4+VIDEO_AFTER_LAST_MESSAGE);}
  else if(compact.includes('보고싶어')){setTimeout(()=>appendChat('나도 보고 싶구낭'),MESSAGE_INTERVAL);setTimeout(()=>appendChat('안되겠다'),MESSAGE_INTERVAL*2);setTimeout(()=>appendChat('기다려봐'),MESSAGE_INTERVAL*3);setTimeout(()=>showCall('video'),MESSAGE_INTERVAL*3+VIDEO_AFTER_LAST_MESSAGE);}
 }
@@ -228,7 +237,7 @@ function renderCall(){
 }
 function finishCall(answered){const type=incomingCall?.type;incomingCall=null;document.querySelector('.call-overlay')?.remove();state='home';active='';kakaoRoom='';kakaoPerson='';draw();
  if(type==='video'){if(answered)setTimeout(()=>appendChat('오늘 하루도 너무 수고한 우리 자기 내가 많이 사랑하는 거 알지? 꿈에서 만나자 잘자요 사랑해💜'),5000);return;}
- if(answered){['둥둥아 전화 왜 끊어🥲','일어났더니 내 핸드폰은 없고 둥둥이 핸드폰이 나한테 있네…..ㅎ','집에 잘 들어갔어?','전화할까? 보고 싶구낭','안되겠다','기다려봐'].forEach((m,i)=>setTimeout(()=>appendChat(m),MESSAGE_INTERVAL*(i+1)));setTimeout(()=>showCall('video'),MESSAGE_INTERVAL*6+VIDEO_AFTER_LAST_MESSAGE);}
+ if(answered){awaitingPostCallReply=false;['일어났더니 내 핸드폰은 없고 둥둥이 핸드폰이 나한테 있네…..ㅎ','집에 잘 들어갔어?'].forEach((m,i)=>setTimeout(()=>{appendChat(m);if(i===1)awaitingPostCallReply=true;},MESSAGE_INTERVAL*(i+1)));}
  else{['노아왔숑','자기야 왜 전화 안받아??😕','일어났더니 내 핸드폰은 없고 둥둥이 핸드폰이 나한테 있네…..ㅎ','모하구 이써'].forEach((m,i)=>setTimeout(()=>appendChat(m),MESSAGE_INTERVAL*(i+1)));}
 }
 function showDialer(){state='app';active='전화';const rows=[['어제',[['↙','동생','오후 1:12','miss'],['↙','어마마마','오후 12:22',''],['↙','02-0312-0210','오전 11:45','miss'],['↙','031-0312-0312','오전 10:51','miss']]],['10월 20일 화요일',[['↙','내둥둥이💜','오후 10:22',''],['↙','내둥둥이💜 (2)','오후 10:17',''],['↗','유하민','오후 5:53','out']]],['10월 19일 월요일',[['↙','유하민','오후 7:12','miss'],['↗','내둥둥이💜','오후 7:07','out'],['↙','내둥둥이💜','오후 1:52','miss']]]];let list=rows.map(g=>'<section class="call-group"><div class="call-date">'+g[0]+'</div><div class="call-rows">'+g[1].map(x=>'<div class="call-row"><span class="call-direction '+x[3]+'">'+x[0]+'</span><span class="call-person">'+x[1]+'</span><span class="call-when '+x[3]+'">'+x[2]+'<small>HD</small></span></div>').join('')+'</div></section>').join('');view.innerHTML='<div class="phone-app"><header class="phone-head"><span>☰</span><b>전화</b><span>☷ &nbsp;⌕ &nbsp;⋮</span></header><div class="phone-body"><div class="missed-card" id="missedCard"><button class="missed-close" id="closeMissed">×</button><strong>동생의 부재중 전화 1개가 있습니다.</strong><button class="missed-open" id="missedOpen">전화 걸기</button></div><div class="phone-list">'+list+'</div></div><div class="phone-tabs"><button data-phone-tab="키패드">⠿<small>키패드</small></button><button class="selected" data-phone-tab="최근기록">☎<small>최근기록</small></button><button data-phone-tab="연락처">♙<small>연락처</small></button></div></div>';view.querySelector('#closeMissed').onclick=()=>view.querySelector('#missedCard').remove();view.querySelector('#missedOpen').onclick=()=>showCall('voice');view.querySelectorAll('[data-phone-tab]').forEach(b=>b.onclick=()=>{view.querySelectorAll('[data-phone-tab]').forEach(x=>x.classList.remove('selected'));b.classList.add('selected')});}
