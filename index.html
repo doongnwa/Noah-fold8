@@ -229,6 +229,31 @@
 .device.open:has(.pin) .pin .pad button{width:clamp(30px,7vh,43px)!important;height:clamp(30px,7vh,43px)!important;font-size:clamp(16px,3.2vh,22px)!important;justify-self:center;align-self:center}
 .device.open:has(.pin) .pin .pad .pin-action{font-size:clamp(11px,2.2vh,14px)!important;width:100%!important;white-space:nowrap}
 .device.open:has(.pin) .pin .pad .pin-erase{font-size:clamp(21px,4vh,27px)!important}
+</style><style>
+/* Fold inner display: size all screens against the actual phone viewport. */
+.device.open .screen{overflow:hidden!important}
+.device.open .view{min-height:0;overflow:hidden}
+.device.open .page,.device.open .kakao,.device.open .gemini-app,.device.open .dialer{min-height:0;max-height:100%;overflow:hidden}
+.device.open .pagebody,.device.open .kakao-list,.device.open .kakao-room-body,.device.open .gemini-list,.device.open .gemini-conversation{min-height:0;overflow-y:auto}
+.device.open .call-overlay{box-sizing:border-box;inset:0;min-height:0;overflow:hidden!important;display:flex;flex-direction:column;align-items:stretch}
+.device.open .call-topline{height:auto;min-height:0;flex:0 0 auto;padding:clamp(5px,1.6vh,10px) 3%;font-size:clamp(10px,1.7vh,13px)}
+.device.open .call-connected-head{height:auto!important;min-height:0;flex:0 0 auto;padding:clamp(2px,.6vh,5px) 4% 0!important;gap:clamp(2px,.8vh,6px)!important}
+.device.open .call-hd{font-size:clamp(11px,2.4vh,16px)}
+.device.open .call-contact{font-size:clamp(19px,5vh,31px)!important;line-height:1.12}
+.device.open .call-subtitle{font-size:clamp(11px,2.4vh,15px)}
+.device.open .call-control-grid{box-sizing:border-box;width:min(66%,360px)!important;max-height:none;min-height:0;flex:0 1 auto;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:clamp(9px,2.5vw,20px)!important;row-gap:clamp(4px,1.4vh,11px)!important;margin:auto auto clamp(4px,1vh,8px)!important;align-content:center}
+.device.open .call-control{min-height:0;gap:clamp(2px,.6vh,5px);padding:0}
+.device.open .call-control-icon{width:clamp(34px,8.5vh,55px)!important;height:clamp(34px,8.5vh,55px)!important;font-size:clamp(17px,4vh,25px)!important;border-radius:28%}
+.device.open .call-control small{font-size:clamp(9px,2.2vh,13px)!important;line-height:1.2}
+.device.open .call-bottom{height:auto!important;min-height:0;flex:0 0 auto;padding:clamp(5px,1.6vh,12px) 0 clamp(7px,2vh,14px);display:grid;place-items:center}
+.device.open .call-bottom .call-decline{width:clamp(42px,10vh,62px)!important;height:clamp(42px,10vh,62px)!important}
+.device.open .call-incoming-head{min-height:0;flex:1 1 auto;margin:0;justify-content:center}
+.device.open .call-incoming-actions{min-height:0;flex:0 0 auto;margin:0 auto clamp(12px,4vh,28px);width:min(75%,390px);gap:16px}
+.device.open .call-incoming-actions button{width:clamp(45px,11vh,66px);height:clamp(45px,11vh,66px)}
+.device.open .call-keypad{inset:0!important;padding:clamp(8px,2vh,16px) 18%;overflow-y:auto}
+.device.open .call-keypad>div{min-height:0}
+.device.open .call-keypad button{font-size:clamp(14px,3vh,22px);padding:clamp(2px,.8vh,8px)}
+@media(max-height:560px){.device.open .call-control-grid{row-gap:3px!important}.device.open .call-control-icon{width:clamp(29px,7vh,44px)!important;height:clamp(29px,7vh,44px)!important}.device.open .call-bottom{padding:3px 0 7px}.device.open .call-bottom .call-decline{width:40px!important;height:40px!important}}
 </style></head><body><div class="stage"><div class="toolbar"><button id="foldBtn">↔ 펼치기</button><button id="resetBtn">🔒 잠금화면</button><span id="mode">커버 화면</span></div><div class="device" id="device"><div class="screen"><div class="status"><span id="simClock">2:10</span><span>▴ ▰ ◕ 85%</span></div><div class="view" id="view"></div><div class="android-nav"><button class="recent" aria-label="최근 앱" disabled>Ⅲ</button><button id="homebar" aria-label="홈으로">□</button><button id="androidBack" aria-label="뒤로">‹</button></div></div></div><div id="replyHint" class="reply-hint" aria-live="polite" hidden>노아에게 답장하자</div><div class="note">Noah’s galaxy fold8</div></div><script>
 const device=document.getElementById('device'),view=document.getElementById('view'),foldBtn=document.getElementById('foldBtn');let state='lock',digits='',opened=false,active='',kakaoTab='친구',kakaoPerson='',kakaoRoom='';
 const iconFiles={'카카오톡':'icon-kakao.png','전화':'icon-phone.png','Samsung Health':'icon-health.png','메시지':'icon-messages.png'};
