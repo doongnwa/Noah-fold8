@@ -242,7 +242,7 @@ if(kakaoRoom){
  them('웬일로 많이 먹었네ㅎㅎㅎ','오후 10:30')+
  me('미치겠다 입 터져버려','오후 10:31')+
  me('하 배가 너무 부르다','오후 11:00')+
- me('<img class="chat-sticker" src="cat-floor-replacement.jpg" alt="바닥에 누워 있는 고양이 사진">','오후 11:00')+
+ me('<img class="chat-sticker" src="IMG_0673.jpeg" alt="바닥에 누워 있는 고양이 사진">','오후 11:00')+
  me('지금 이상태','오후 11:00')+
  them('전화하장','오후 11:00')+
  '<div class="kakao-day">2026년 9월 28일 월요일</div>'+
@@ -270,7 +270,12 @@ if(kakaoRoom){
  them('마니마니마니사랑해💜','오전 2:43')+
  '<div class="kakao-day">2026년 10월 18일 일요일</div>'+
  me('비 온다','오후 7:18')+
- me('푸른 하늘의 단비 듣자 같이💜','오후 7:19');
+ me('푸른 하늘의 단비 듣자 같이💜','오후 7:19')+
+ '<div class="kakao-day">2026년 10월 23일 금요일</div>'+
+ them('오늘 하루 뭐했어?','오후 8:52')+
+ me('노아생각!','오후 8:53')+
+ them('너도?','오후 8:53')+
+ them('나도💜','오후 8:53');
  }else roomBody='<div class="kakao-placeholder">대화 내용은 추후 추가 예정</div>';
  if(kakaoRoom==='ddong')roomBody+=dynamicChat.map((m,i)=>((i===0||dynamicChat[i-1].date!==m.date)?'<div class="kakao-day">'+escapeHtml(m.date||new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'long'}))+'</div>':'')+renderDynamic(m)).join('');
  inner=roomHeader+'<div class="kakao-room-body '+(kakaoRoom==='ddong'?'ddong-room':'')+'">'+roomBody+'</div>'+(kakaoRoom==='ddong'?'<div class="kakao-room-bottom"><button class="plus-chat" type="button" aria-label="첨부">＋</button><input id="chatReply" type="text" placeholder="메시지 입력" aria-label="메시지 입력" autocomplete="off" inputmode="none" readonly aria-haspopup="true"><button class="emoji-chat" type="button" aria-label="이모티콘">☻</button><button id="sendReply" type="button">전송</button></div><div class="sim-keyboard" id="simKeyboard" hidden></div>':'<div class="kakao-room-bottom">메시지 입력 (추후 구현)</div>');
