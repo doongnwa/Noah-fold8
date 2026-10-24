@@ -745,12 +745,12 @@ function sendChatReply(text){if(ddongChatLocked)return;text=text.trim();if(!text
    awaitingPostCallReply=false;updateReplyHint();
    setDdChatLocked(true);const messages=thinking?['자나깨나 노아 생각이라니','보고 싶다','안되겠다','기다려봐']:[missing?'방금 전화했는데 또 보고싶어?':'아까 봤는데 또 보고싶구나','안되겠다','기다려봐'];
    messages.forEach((m,i)=>setTimeout(()=>appendChat(m),MESSAGE_INTERVAL*(i+1)));
-   setTimeout(()=>showCall('voice',false,'bubble%20with%20STARS_1792837469821476.mov'),MESSAGE_INTERVAL*messages.length+VIDEO_AFTER_LAST_MESSAGE);
+   setTimeout(()=>(thinking?showCall('voice',false,'bubble%20with%20STARS_1792837469821476.mov'):showCall('video')),MESSAGE_INTERVAL*messages.length+VIDEO_AFTER_LAST_MESSAGE);
   }
   return;
  }
  if(compact.includes('노아생각')){['자나깨나 노아 생각이라니','보고 싶다','안되겠다','기다려봐'].forEach((m,i)=>setTimeout(()=>appendChat(m),MESSAGE_INTERVAL*(i+1)));setTimeout(()=>showCall('voice',false,'bubble%20with%20STARS_1792837469821476.mov'),MESSAGE_INTERVAL*4+VIDEO_AFTER_LAST_MESSAGE);}
- else if(compact.includes('보고싶어')){setTimeout(()=>appendChat('나도 보고 싶구낭'),MESSAGE_INTERVAL);setTimeout(()=>appendChat('안되겠다'),MESSAGE_INTERVAL*2);setTimeout(()=>appendChat('기다려봐'),MESSAGE_INTERVAL*3);setTimeout(()=>showCall('voice',false,'bubble%20with%20STARS_1792837469821476.mov'),MESSAGE_INTERVAL*3+VIDEO_AFTER_LAST_MESSAGE);}
+ else if(compact.includes('보고싶어')){setTimeout(()=>appendChat('나도 보고 싶구낭'),MESSAGE_INTERVAL);setTimeout(()=>appendChat('안되겠다'),MESSAGE_INTERVAL*2);setTimeout(()=>appendChat('기다려봐'),MESSAGE_INTERVAL*3);setTimeout(()=>showCall('video'),MESSAGE_INTERVAL*3+VIDEO_AFTER_LAST_MESSAGE);}
 }
 function openDdChat(){unreadDd=0;updateKakaoUnread();device.querySelector('.kakao-banner')?.remove();active='카카오톡';state='app';kakaoTab='채팅';kakaoPerson='';kakaoRoom='ddong';draw();const body=view.querySelector('.kakao-room-body');if(body)body.scrollTop=body.scrollHeight;}
 let preVideoOpened=null;
