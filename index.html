@@ -735,6 +735,8 @@ function appendChat(text,mine=false){const input=view.querySelector('#chatReply'
 function appendChatVideo(src){const input=view.querySelector('#chatReply');if(input&&input.value)ddongDraft=input.value;const reading=state==='app'&&active==='카카오톡'&&kakaoRoom==='ddong';dynamicChat.push({text:'동영상',video:src,mine:false,time:clockText(),date:new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'long'})});if(!reading){unreadDd++;updateKakaoUnread();showKakaoBanner('동영상을 보냈습니다.')}if(reading){unreadDd=0;draw();const body=view.querySelector('.kakao-room-body');if(body)animateChatToBottom();}else if(state==='app'&&active==='카카오톡'&&!kakaoRoom)draw();}
 let awaitingPostCallReply=false,postCallAnswered=false,ddongChatLocked=false,ddongDraft='';
 let ddongScenarioStage='initial';
+let ddongCallBranch='standard';
+const ddongAttachedVoiceVideo='bubble%20with%20STARS_1792837469821476.mov';
 function setDdChatLocked(locked){ddongChatLocked=locked;if(locked){awaitingPostCallReply=false;updateReplyHint()}const input=view.querySelector('#chatReply');if(input){if(locked){input.blur()}input.disabled=locked;input.placeholder='메시지 입력';}const send=view.querySelector('#sendReply');if(send)send.disabled=locked;}
 function updateReplyHint(){const hint=document.getElementById('replyHint');if(hint){hint.hidden=!(awaitingPostCallReply||ddongScenarioStage==='final_reply');hint.textContent=ddongScenarioStage==='final_reply'?'노아에게 답장하자 (잘자 사랑해)':postCallAnswered?'노아에게 답장하자 (ex. 응, 보고싶어)':'노아에게 답장하자 (ex. 노아생각, 보고싶어)';}}
 function sendChatReply(text){
@@ -756,12 +758,13 @@ function sendChatReply(text){
  const thinking=compact.includes('노아생각');
  if(!(affirmative||missing||thinking))return;
  awaitingPostCallReply=false;
+ ddongCallBranch=postCallAnswered&&missing?'attached_voice':'standard';
  ddongScenarioStage='video_pending';
  updateReplyHint();
  setDdChatLocked(true);
  const messages=thinking?['자나깨나 노아 생각이라니','보고 싶다','안되겠다','기다려봐']:[missing?'방금 전화했는데 또 보고싶어?':'아까 봤는데 또 보고싶구나','안되겠다','기다려봐'];
  messages.forEach((m,i)=>setTimeout(()=>{if(ddongScenarioStage==='video_pending')appendChat(m)},MESSAGE_INTERVAL*(i+1)));
- setTimeout(()=>{if(ddongScenarioStage==='video_pending')showCall('video')},MESSAGE_INTERVAL*messages.length+VIDEO_AFTER_LAST_MESSAGE);
+ setTimeout(()=>{if(ddongScenarioStage==='video_pending')showCall(ddongCallBranch==='attached_voice'?'voice':'video',false,ddongCallBranch==='attached_voice'?ddongAttachedVoiceVideo:null)},MESSAGE_INTERVAL*messages.length+VIDEO_AFTER_LAST_MESSAGE);
 }
 function openDdChat(){unreadDd=0;updateKakaoUnread();device.querySelector('.kakao-banner')?.remove();active='카카오톡';state='app';kakaoTab='채팅';kakaoPerson='';kakaoRoom='ddong';draw();const body=view.querySelector('.kakao-room-body');if(body)body.scrollTop=body.scrollHeight;}
 let preVideoOpened=null;
@@ -769,14 +772,14 @@ let videoTransitionTimers=[];
 function clearVideoTransition(){videoTransitionTimers.forEach(clearTimeout);videoTransitionTimers=[];device.classList.remove('video-transition','video-transition-flat','video-transition-final');}
 function enterVideoLandscape(){if(preVideoOpened===null)preVideoOpened=opened;clearVideoTransition();opened=true;device.classList.add('video-transition');foldBtn.textContent='↔ 접기';document.getElementById('mode').textContent='펼치는 중';videoTransitionTimers.push(setTimeout(()=>{device.classList.add('video-transition-flat');},420));videoTransitionTimers.push(setTimeout(()=>{device.classList.remove('video-transition-flat');device.classList.add('open','video-transition-final');document.getElementById('mode').textContent='내부 화면';},1050));videoTransitionTimers.push(setTimeout(()=>{clearVideoTransition();device.classList.add('open');},1660));}
 function leaveVideoLandscape(){if(preVideoOpened===null)return;clearVideoTransition();opened=preVideoOpened;preVideoOpened=null;device.classList.remove('video-landscape');device.classList.toggle('open',opened);foldBtn.textContent=opened?'↔ 접기':'↔ 펼치기';document.getElementById('mode').textContent=opened?'내부 화면':'커버 화면';}
-function showCall(type='voice',outgoing=false){if(incomingCall)return;incomingCall={type,answered:!!outgoing,outgoing,startedAt:outgoing?Date.now():null};if(type==='video'&&outgoing)enterVideoLandscape();renderCall();if(!outgoing)startIncomingVibration();}
+function showCall(type='voice',outgoing=false,videoSrc=null){if(incomingCall)return;incomingCall={type,answered:!!outgoing,outgoing,videoSrc,startedAt:outgoing?Date.now():null};if(type==='video'&&outgoing)enterVideoLandscape();renderCall();if(!outgoing)startIncomingVibration();}
 function renderCall(){
  document.querySelector('.call-overlay')?.remove();
  if(!incomingCall)return;
  const c=incomingCall,el=document.createElement('div');
  el.className='call-overlay'+(c.answered?' call-ongoing':'')+(c.type==='video'?' video-call':'');
  const elapsed=()=>{const sec=Math.floor((Date.now()-(c.startedAt||Date.now()))/1000);return String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0')};
- const videoMedia=c.answered&&c.type==='video'?'<div class="video-call-media"><video class="video-call-player" src="80197C7E-E52C-435C-A278-2D586714D459.mov" autoplay playsinline preload="auto"></video><div class="video-call-label">내 둥둥이💜</div></div>':'';
+ const videoMedia=c.answered&&(c.type==='video'||c.videoSrc)?'<div class="video-call-media"><video class="video-call-player" src="'+(c.videoSrc||'80197C7E-E52C-435C-A278-2D586714D459.mov')+'" autoplay playsinline preload="auto"></video><div class="video-call-label">내 둥둥이💜</div></div>':'';
  const tools='<div class="call-control-grid">'+[['▣','녹음'],['♩','내 소리 차단'],['ᛒ','블루투스'],['◖))','스피커'],['⠿','키패드'],['⋮','더 보기']].map((x,i)=>'<button class="call-control" type="button" data-control="'+i+'"><span class="call-control-icon">'+x[0]+'</span><small>'+x[1]+'</small></button>').join('')+'</div>';
  el.innerHTML=videoMedia+'<div class="call-topline"><span>◂ 9:45 ☎</span><span>▰ 5G ▴ ▣</span></div>'+(c.answered?'<div class="call-connected-head"><div class="call-hd">'+(c.type==='video'?'▣ 영상통화':'▣ HD Voice')+' <span class="call-timer">'+elapsed()+'</span></div><div class="call-contact">내 둥둥이💜</div><div class="call-subtitle">통화 중</div></div>'+tools+'<div class="call-bottom"><button class="call-decline" id="callEnd" aria-label="통화 종료"><svg class="end-phone-svg" viewBox="0 0 24 24" width="31" height="31" aria-hidden="true"><path d="M3.2 13.3c5.2-4.2 12.4-4.2 17.6 0l-2.2 4.5a1.4 1.4 0 0 1-1.8.7l-2.7-1.1a1.4 1.4 0 0 1-.9-1.3v-1.3a15 15 0 0 0-2.4 0v1.3a1.4 1.4 0 0 1-.9 1.3l-2.7 1.1a1.4 1.4 0 0 1-1.8-.7z" fill="currentColor"/></svg></button></div>':'<div class="call-incoming-head"><div class="call-contact">내 둥둥이💜</div><div class="call-subtitle">'+(c.type==='video'?'영상통화 수신 중':'전화 수신 중')+'</div></div><div class="call-incoming-actions"><button class="call-answer" id="callAnswer" aria-label="전화 받기"><svg viewBox="0 0 24 24" width="36" height="36" aria-hidden="true"><path fill="currentColor" d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.56 3.57.56a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.24.2 2.45.56 3.57a1 1 0 0 1-.25 1.02z"/></svg></button><button class="call-decline" id="callReject" aria-label="전화 거절"><svg viewBox="0 0 24 24" width="36" height="36" aria-hidden="true"><path fill="currentColor" d="M3.2 13.3c5.2-4.2 12.4-4.2 17.6 0l-2.2 4.5a1.4 1.4 0 0 1-1.8.7l-2.7-1.1a1.4 1.4 0 0 1-.9-1.3v-1.3a15 15 0 0 0-2.4 0v1.3a1.4 1.4 0 0 1-.9 1.3l-2.7 1.1a1.4 1.4 0 0 1-1.8-.7z"/></svg></button></div>');
  device.querySelector('.screen').append(el);
@@ -792,7 +795,7 @@ function renderCall(){
  }
  if(c.answered){const timerLabel=el.querySelector('.call-timer');const timer=setInterval(()=>{if(!el.isConnected||incomingCall!==c){clearInterval(timer);return}timerLabel.textContent=elapsed()},1000);
  el.querySelectorAll('.call-control').forEach(btn=>btn.onclick=()=>{btn.classList.toggle('selected');if(btn.dataset.control==='4'){const pad=el.querySelector('.call-keypad');if(pad)pad.remove();else{const p=document.createElement('div');p.className='call-keypad';p.innerHTML='<button class="close-keypad">닫기 ×</button><div>'+Array.from('123456789*0#').map(k=>'<button>'+k+'</button>').join('')+'</div>';el.append(p);p.querySelector('.close-keypad').onclick=()=>p.remove()}}});
- const audio=document.getElementById('callVoiceAudio');if(audio&&c.type==='voice'){audio.currentTime=0;audio.play().catch(()=>{});}
+ const audio=document.getElementById('callVoiceAudio');if(audio&&c.type==='voice'&&!c.videoSrc){audio.currentTime=0;audio.play().catch(()=>{});}
  }else{const audio=document.getElementById('callVoiceAudio');if(audio)audio.pause()}
  const answer=el.querySelector('#callAnswer'),reject=el.querySelector('#callReject'),end=el.querySelector('#callEnd');
  if(answer)answer.onclick=()=>{stopIncomingVibration();incomingCall.answered=true;incomingCall.startedAt=Date.now();if(incomingCall.type==='video')enterVideoLandscape();renderCall()};
@@ -800,7 +803,13 @@ function renderCall(){
  if(end)end.onclick=()=>{const audio=document.getElementById('callVoiceAudio');if(audio){audio.pause();audio.currentTime=0}finishCall(true)};
 }
 function finishCall(answered){stopIncomingVibration();const type=incomingCall?.type;if(type){liveCallHistory.unshift({type,answered,when:new Date()});if(liveCallHistory.length>30)liveCallHistory.pop()}incomingCall=null;document.querySelector('.call-overlay')?.remove();if(type==='video')leaveVideoLandscape();/* Keep the exact screen and scroll position visible before the incoming call. */
- if(type==='video'){if(ddongScenarioStage!=='video_pending')return;ddongScenarioStage=answered?'video_followup':'video_rejected';setDdChatLocked(true);if(answered)setTimeout(()=>{appendChat('오늘 하루도 너무 수고한 우리 자기 내가 많이 사랑하는 거 알지? 꿈에서 만나자 잘자요 사랑해💜');setTimeout(()=>{appendChatVideo('26d7ff2078cccece0cdd91850918eb5f71845523.mov');ddongScenarioStage='final_reply';setDdChatLocked(false);updateReplyHint();},5000);},5000);else ['🥲🥲🥲','전화해죠'].forEach((m,i)=>setTimeout(()=>{appendChat(m);if(i===1)setDdChatLocked(false)},MESSAGE_INTERVAL*(i+1)));return;}
+ if((type==='video'||(type==='voice'&&ddongCallBranch==='attached_voice'&&ddongScenarioStage!=='initial'))){if(ddongScenarioStage!=='video_pending'&&ddongScenarioStage!=='attached_voice_retry')return;
+ if(ddongCallBranch==='attached_voice'&&!answered&&ddongScenarioStage==='video_pending'){
+  ddongScenarioStage='attached_voice_rejected';setDdChatLocked(true);
+  setTimeout(()=>appendChat('전화해죠🥲'),MESSAGE_INTERVAL);
+  setTimeout(()=>{if(ddongScenarioStage==='attached_voice_rejected'){ddongScenarioStage='attached_voice_retry';showCall('voice',true,ddongAttachedVoiceVideo)}},MESSAGE_INTERVAL+5000);
+  return;
+ }ddongScenarioStage=answered?'video_followup':'video_rejected';setDdChatLocked(true);if(answered)setTimeout(()=>{appendChat('오늘 하루도 너무 수고한 우리 자기 내가 많이 사랑하는 거 알지? 꿈에서 만나자 잘자요 사랑해💜');setTimeout(()=>{appendChatVideo('26d7ff2078cccece0cdd91850918eb5f71845523.mov');ddongScenarioStage='final_reply';setDdChatLocked(false);updateReplyHint();},5000);},5000);else ['🥲🥲🥲','전화해죠'].forEach((m,i)=>setTimeout(()=>{appendChat(m);if(i===1)setDdChatLocked(false)},MESSAGE_INTERVAL*(i+1)));return;}
  if(ddongScenarioStage!=='initial')return;ddongScenarioStage='initial_followup';if(answered){postCallAnswered=true;setDdChatLocked(true);['일어났더니 내 핸드폰은 없고 둥둥이 핸드폰이 나한테 있네…..ㅎ','집에 잘 들어갔어?'].forEach((m,i)=>setTimeout(()=>{appendChat(m);if(i===1){setDdChatLocked(false);awaitingPostCallReply=true;ddongScenarioStage='reply';updateReplyHint();}},MESSAGE_INTERVAL*(i+1)));}
  else{postCallAnswered=false;setDdChatLocked(true);['노아왔숑','자기야 왜 전화 안받아??😕','일어났더니 내 핸드폰은 없고 둥둥이 핸드폰이 나한테 있네…..ㅎ','모하구 이써'].forEach((m,i)=>setTimeout(()=>{appendChat(m);if(i===3){setDdChatLocked(false);awaitingPostCallReply=true;ddongScenarioStage='reply';updateReplyHint()}},MESSAGE_INTERVAL*(i+1)));}
 }
