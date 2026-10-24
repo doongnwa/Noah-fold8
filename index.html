@@ -761,11 +761,11 @@ function sendChatReply(text){
  const thinking=compact.includes('노아생각');
  if(!(affirmative||missing||thinking))return;
  awaitingPostCallReply=false;
- ddongCallBranch=postCallAnswered&&missing?'attached_voice':'standard';
+ ddongCallBranch=missing?'attached_voice':'standard';
  ddongScenarioStage='video_pending';
  updateReplyHint();
  setDdChatLocked(true);
- const messages=thinking?['자나깨나 노아 생각이라니','보고 싶다','안되겠다','기다려봐']:[missing?'방금 전화했는데 또 보고싶어?':'아까 봤는데 또 보고싶구나','안되겠다','기다려봐'];
+ const messages=thinking?['자나깨나 노아 생각이라니','보고 싶다','안되겠다','기다려봐']:(missing&&!postCallAnswered?['나도 보고싶구낭','전화 받아죠']:[missing?'방금 전화했는데 또 보고싶어?':'아까 봤는데 또 보고싶구나','안되겠다','기다려봐']);
  messages.forEach((m,i)=>setTimeout(()=>{if(ddongScenarioStage==='video_pending')appendChat(m)},MESSAGE_INTERVAL*(i+1)));
  setTimeout(()=>{if(ddongScenarioStage==='video_pending')showCall(ddongCallBranch==='attached_voice'?'voice':'video',false,ddongCallBranch==='attached_voice'?ddongAttachedVoiceVideo:null)},MESSAGE_INTERVAL*messages.length+VIDEO_AFTER_LAST_MESSAGE);
 }
