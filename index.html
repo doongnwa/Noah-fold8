@@ -562,6 +562,24 @@ function drawInstagram(){
  view.querySelector('#igPhotoClose')?.addEventListener('click',()=>{instagramSelectedPost=null;drawInstagram()});
  view.querySelector('#igPrevPhoto')?.addEventListener('click',()=>{instagramCarouselIndex=Math.max(0,instagramCarouselIndex-1);drawInstagram()});
  view.querySelector('#igNextPhoto')?.addEventListener('click',()=>{instagramCarouselIndex=Math.min(instagramPosts[instagramSelectedPost].photos.length-1,instagramCarouselIndex+1);drawInstagram()});
+ // Mobile Instagram-style horizontal swipes inside an opened post.
+ const postMedia=view.querySelector('.ig-post-overlay .ig-post-media');
+ if(postMedia){
+  let startX=0,startY=0;
+  postMedia.addEventListener('touchstart',e=>{if(e.touches.length!==1)return;startX=e.touches[0].clientX;startY=e.touches[0].clientY},{passive:true});
+  postMedia.addEventListener('touchend',e=>{
+   if(!e.changedTouches.length)return;
+   const dx=e.changedTouches[0].clientX-startX,dy=e.changedTouches[0].clientY-startY;
+   if(Math.abs(dx)<45||Math.abs(dx)<Math.abs(dy)*1.25)return;
+   if(priv&&instagramPrivateSelectedPhoto!==null){
+    const total=instagramPrivatePosts[instagramPrivateSelectedPhoto].photos.length;
+    instagramPrivateCarouselIndex=Math.max(0,Math.min(total-1,instagramPrivateCarouselIndex+(dx<0?1:-1)));drawInstagram();
+   }else if(!priv&&instagramSelectedPost!==null){
+    const total=instagramPosts[instagramSelectedPost].photos.length;
+    instagramCarouselIndex=Math.max(0,Math.min(total-1,instagramCarouselIndex+(dx<0?1:-1)));drawInstagram();
+   }
+  },{passive:true});
+ }
  view.querySelector('#igAccountName')?.addEventListener('click',()=>{instagramSwitch=true;drawInstagram()});
  view.querySelectorAll('[data-ig-panel]').forEach(b=>b.onclick=()=>{instagramPanel=b.dataset.igPanel;drawInstagram()});
  view.querySelector('#igVisitorProfile')?.addEventListener('click',()=>{
