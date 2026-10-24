@@ -862,7 +862,7 @@ function drawNaver(){
  const back=view.querySelector('#naverBack');if(back)back.onclick=()=>{naverSearchOpen=false;drawNaver()};
 }
 let notesSelected=null;
-const samsungNotes=[{title:'숙제',body:'플래시백\n시네마\n바래\n60초\n나이스 가이?\n백일\n킥백\n화분\n내 머리가 나빠서\nIf i die\nMake up',time:'오전 2:04'}];
+const samsungNotes=[{title:'숙제',body:'플래시백\n시네마\n바래\n60초\n나이스 가이?\n백일\n킥백\n화분\n내 머리가 나빠서\nIf i die\nMake up',time:'오전 2:04'},{title:'제목없음',body:'목걸이\n향수\n노래불러주기\n커플폰?\n반지(호수 몰래)\n꽃',time:'오전 2:05'},{title:'비 소나기 부슬비 단비 태풍..은 아닌 것 같고 사락비',body:'푸른 하늘에 단비',time:'오전 2:06'}];
 function drawSamsungNotes(){
  const header='<header class="sn-header"><span class="sn-menu">☰</span><strong>'+(notesSelected===null?'모든 노트':escapeHtml(samsungNotes[notesSelected].title))+'</strong><span class="sn-grow"></span><span>▣</span><span>⌕</span><span>⋮</span></header>';
  const sidebar='<aside class="sn-sidebar"><div>▣</div><div>♧</div><div>♜</div><hr><div>▱</div></aside>';
