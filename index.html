@@ -368,6 +368,17 @@
 .instagram-app .ig-switch-shade{bottom:0}
 .device.open .instagram-app .ig-overview{justify-content:flex-start}
 @media(max-width:430px){.instagram-app .ig-overview{gap:9px}.instagram-app .ig-stats b{font-size:15px}.instagram-app .ig-stats small{font-size:10px}.instagram-app .ig-profile{padding:11px}}
+
+/* Center full gallery media inside usable screen, clear of navigation and caption */
+.gallery-modal{display:flex!important;align-items:center!important;justify-content:center!important;padding:68px 10px 46px!important;overflow:hidden!important}
+.gallery-modal>img,.gallery-modal>video{display:block!important;position:relative!important;width:auto!important;height:auto!important;max-width:100%!important;max-height:100%!important;object-fit:contain!important;flex:0 1 auto!important;margin:auto!important}
+.gallery-modal .gallery-capture{top:19px!important;z-index:2}
+.gallery-modal>button{z-index:3}
+.kakao-avatar>svg{display:block;width:25px;height:25px;flex:none;margin:auto;align-self:center;justify-self:center}
+/* Automatically unfolded landscape call view */
+.device.video-landscape{width:min(720px,96vw)!important;aspect-ratio:1.65!important;border-radius:25px!important}
+.device.video-landscape .video-call-player{object-fit:contain!important}
+.device.video-landscape .call-overlay{inset:0}
 </style></head><body><div class="stage"><div class="toolbar"><button id="foldBtn">↔ 펼치기</button><button id="resetBtn">🔒 잠금화면</button><span id="mode">커버 화면</span></div><div class="device" id="device"><div class="screen"><div class="status"><span id="simClock">2:10</span><span>▴ ▰ ◕ 85%</span></div><div class="view" id="view"></div><div class="android-nav"><button class="recent" aria-label="최근 앱" disabled>Ⅲ</button><button id="homebar" aria-label="홈으로">□</button><button id="androidBack" aria-label="뒤로">‹</button></div></div></div><div id="replyHint" class="reply-hint" aria-live="polite" hidden>노아에게 답장하자 (ex. 노아생각)</div><div class="note">Noah’s galaxy fold8</div></div><script>
 const device=document.getElementById('device'),view=document.getElementById('view'),foldBtn=document.getElementById('foldBtn');let state='lock',digits='',opened=false,active='',kakaoTab='친구',kakaoPerson='',kakaoRoom='';
 const iconFiles={'카카오톡':'icon-kakao.png','전화':'icon-phone.png','Samsung Health':'icon-health.png','메시지':'icon-messages.png'};
@@ -408,7 +419,10 @@ function sendChatReply(text){text=text.trim();if(!text)return;appendChat(text,tr
  else if(compact.includes('보고싶어')){setTimeout(()=>appendChat('나도 보고 싶구낭'),MESSAGE_INTERVAL);setTimeout(()=>appendChat('안되겠다'),MESSAGE_INTERVAL*2);setTimeout(()=>appendChat('기다려봐'),MESSAGE_INTERVAL*3);setTimeout(()=>showCall('video'),MESSAGE_INTERVAL*3+VIDEO_AFTER_LAST_MESSAGE);}
 }
 function openDdChat(){unreadDd=0;device.querySelector('.kakao-banner')?.remove();active='카카오톡';state='app';kakaoTab='채팅';kakaoPerson='';kakaoRoom='ddong';draw();const body=view.querySelector('.kakao-room-body');if(body)body.scrollTop=body.scrollHeight;}
-function showCall(type='voice',outgoing=false){if(incomingCall)return;incomingCall={type,answered:!!outgoing,outgoing,startedAt:outgoing?Date.now():null};renderCall();}
+let preVideoOpened=null;
+function enterVideoLandscape(){if(preVideoOpened===null)preVideoOpened=opened;opened=true;device.classList.add('open','video-landscape');foldBtn.textContent='↔ 접기';document.getElementById('mode').textContent='영상통화 · 가로 화면';}
+function leaveVideoLandscape(){if(preVideoOpened===null)return;opened=preVideoOpened;preVideoOpened=null;device.classList.remove('video-landscape');device.classList.toggle('open',opened);foldBtn.textContent=opened?'↔ 접기':'↔ 펼치기';document.getElementById('mode').textContent=opened?'내부 화면':'커버 화면';}
+function showCall(type='voice',outgoing=false){if(incomingCall)return;incomingCall={type,answered:!!outgoing,outgoing,startedAt:outgoing?Date.now():null};if(type==='video'&&outgoing)enterVideoLandscape();renderCall();}
 function renderCall(){
  document.querySelector('.call-overlay')?.remove();
  if(!incomingCall)return;
@@ -434,11 +448,11 @@ function renderCall(){
  const audio=document.getElementById('callVoiceAudio');if(audio&&c.type==='voice'){audio.currentTime=0;audio.play().catch(()=>{});}
  }else{const audio=document.getElementById('callVoiceAudio');if(audio)audio.pause()}
  const answer=el.querySelector('#callAnswer'),reject=el.querySelector('#callReject'),end=el.querySelector('#callEnd');
- if(answer)answer.onclick=()=>{incomingCall.answered=true;incomingCall.startedAt=Date.now();renderCall()};
+ if(answer)answer.onclick=()=>{incomingCall.answered=true;incomingCall.startedAt=Date.now();if(incomingCall.type==='video')enterVideoLandscape();renderCall()};
  if(reject)reject.onclick=()=>finishCall(false);
  if(end)end.onclick=()=>{const audio=document.getElementById('callVoiceAudio');if(audio){audio.pause();audio.currentTime=0}finishCall(true)};
 }
-function finishCall(answered){const type=incomingCall?.type;if(type){liveCallHistory.unshift({type,answered,when:new Date()});if(liveCallHistory.length>30)liveCallHistory.pop()}incomingCall=null;document.querySelector('.call-overlay')?.remove();/* Keep the exact screen and scroll position visible before the incoming call. */
+function finishCall(answered){const type=incomingCall?.type;if(type){liveCallHistory.unshift({type,answered,when:new Date()});if(liveCallHistory.length>30)liveCallHistory.pop()}incomingCall=null;document.querySelector('.call-overlay')?.remove();if(type==='video')leaveVideoLandscape();/* Keep the exact screen and scroll position visible before the incoming call. */
  if(type==='video'){awaitingPostCallReply=false;updateReplyHint();if(answered)setTimeout(()=>{appendChat('오늘 하루도 너무 수고한 우리 자기 내가 많이 사랑하는 거 알지? 꿈에서 만나자 잘자요 사랑해💜');setTimeout(()=>appendChatVideo('26d7ff2078cccece0cdd91850918eb5f71845523.mov'),5000);},5000);else ['🥲🥲🥲','전화해죠'].forEach((m,i)=>setTimeout(()=>appendChat(m),MESSAGE_INTERVAL*(i+1)));return;}
  if(answered){awaitingPostCallReply=false;updateReplyHint();['일어났더니 내 핸드폰은 없고 둥둥이 핸드폰이 나한테 있네…..ㅎ','집에 잘 들어갔어?'].forEach((m,i)=>setTimeout(()=>{appendChat(m);if(i===1){awaitingPostCallReply=true;updateReplyHint();}},MESSAGE_INTERVAL*(i+1)));}
  else{awaitingPostCallReply=false;updateReplyHint();['노아왔숑','자기야 왜 전화 안받아??😕','일어났더니 내 핸드폰은 없고 둥둥이 핸드폰이 나한테 있네…..ㅎ','모하구 이써'].forEach((m,i)=>setTimeout(()=>{appendChat(m);if(i===3){awaitingPostCallReply=true;updateReplyHint()}},MESSAGE_INTERVAL*(i+1)));}
@@ -463,7 +477,7 @@ function drawInstagram(){
  const priv=instagramAccount==='nadoong830',username=instagramAccount;
  const list=instagramPanel==='following'||instagramPanel==='followers';
  const target=priv?'doongna830':'plave_official';
- const ext=priv?'https://www.instagram.com/accounts/edit/':'https://www.instagram.com/plave_official?cplk=eHc4Nnl3ejYyY3o0';
+ const ext=priv?'https://www.instagram.com/mmazzayo_/':'https://www.instagram.com/plave_official/';
  const back='<button class="ig-back" id="igBack" aria-label="뒤로가기">‹</button>';
  const header='<header class="ig-header">'+(list?back+'<strong>'+username+'</strong>': '<button class="ig-account-name" id="igAccountName">'+username+' <span>⌄</span></button>')+'<span class="ig-header-actions">'+(list?'':'<button aria-label="새 게시물">⊞</button><button aria-label="메뉴">☰</button>')+'</span></header>';
  let body='';
