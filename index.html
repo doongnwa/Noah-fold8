@@ -502,6 +502,34 @@ body{min-width:0;overflow-x:hidden}
 @media(max-width:480px){.stage{padding:10px 7px 14px}.toolbar{gap:6px}.toolbar button{padding:8px 10px}.device.open{border-width:5px;border-radius:17px}.device:not(.open){border-width:6px}}
 @media(orientation:landscape) and (max-height:550px){.stage{padding:6px;gap:5px}.toolbar button{padding:5px 9px}.note{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.device{transition:none!important}}
+</style><style>
+/* Galaxy Z Fold inner display: KakaoTalk landscape conversation and split keyboard */
+.device.open .kakao:has(.kakao-room-body){background:#696f79!important;min-width:0;overflow:hidden}
+.device.open .kakao-room-head{background:#696f79!important;color:#fff!important;min-height:46px!important;flex:0 0 46px;padding:8px 14px!important;gap:10px}
+.device.open .kakao-room-head strong{color:#fff;font-size:clamp(11px,1.7vw,16px)!important}
+.device.open .kakao-room-head button,.device.open .kakao-room-head .room-tool{color:#fff!important}
+.device.open .kakao-room-head svg{stroke:#fff}
+.device.open .kakao-room-body{background:#696f79!important;background-image:none!important;flex:1 1 0;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:12px 13px 10px!important;gap:10px!important}
+.device.open .kakao-day{font-size:clamp(8px,1.1vw,11px);padding:5px 10px}
+.device.open .chat-line{max-width:95%;gap:5px}
+.device.open .chat-line.mine{max-width:90%}
+.device.open .chat-line.theirs{max-width:90%}
+.device.open .chat-balloon{font-size:clamp(10px,1.4vw,15px)!important;padding:8px 10px;line-height:1.45;border-radius:12px}
+.device.open .chat-face{width:clamp(23px,3.5vw,35px);height:clamp(23px,3.5vw,35px);border-radius:40%}
+.device.open .chat-sender{font-size:clamp(8px,1.1vw,11px)}
+.device.open .chat-line time{font-size:clamp(7px,.9vw,10px)}
+.device.open .kakao-room-bottom{flex:0 0 auto;display:flex;align-items:center;gap:7px;margin:0!important;padding:8px 10px!important;background:#e4e5e8!important;border:0;border-radius:20px 20px 0 0;min-height:52px}
+.device.open .kakao-room-bottom input{flex:1;min-width:0;background:transparent;border:0;border-radius:0;font-size:clamp(10px,1.3vw,14px);padding:7px 4px}
+.device.open .kakao-room-bottom button{flex:none;min-width:29px;min-height:29px;border-radius:50%;background:#fff;color:#222;padding:4px;font-size:18px}
+.device.open .kakao-room-bottom #sendReply{border-radius:20px;background:#fee500;font-size:11px;padding:7px}
+.device.open .sim-keyboard:not([hidden]){flex:0 0 45%;min-height:0;max-height:45%;display:flex;flex-direction:column;padding:4px 10px 12px;background:#e4e4e6;overflow:hidden}
+.device.open .sim-keyboard .kb-toolbar{height:30px;flex:none}
+.device.open .sim-keyboard .kb-keys{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,12%,95px);padding:0 5px}
+.device.open .sim-keyboard .kb-keys>div{min-width:0;display:flex;flex-direction:column;justify-content:space-around}
+.device.open .sim-keyboard .kb-row{display:flex;min-height:0;flex:1;align-items:center;gap:clamp(2px,.5vw,6px);margin:0 0 3px}
+.device.open .sim-keyboard .kb-key{height:clamp(18px,4.8vh,38px);max-height:100%;font-size:clamp(10px,1.7vw,18px);border-radius:5px}
+.device.open .kakao:has(.sim-keyboard:not([hidden])) .kakao-room-body{padding-bottom:8px!important}
+.device.open .kakao:has(.sim-keyboard:not([hidden])) .kakao-room-bottom{border-radius:17px 17px 0 0}
 </style></head><body><div class="stage"><div class="toolbar"><button id="foldBtn">↔ 펼치기</button><button id="resetBtn">🔒 잠금화면</button><span id="mode">커버 화면</span></div><div class="device" id="device"><div class="screen"><div class="status"><span id="simClock">2:10</span><span>▴ ▰ ◕ 85%</span></div><div class="view" id="view"></div><div class="android-nav"><button class="recent" aria-label="최근 앱" disabled>Ⅲ</button><button id="homebar" aria-label="홈으로">□</button><button id="androidBack" aria-label="뒤로">‹</button></div></div></div><div id="replyHint" class="reply-hint" aria-live="polite" hidden>노아에게 답장하자 (ex. 응, 보고싶어)</div><div class="note">Noah’s galaxy fold8</div></div><script>
 /* Fit the simulator to the visible browser viewport, including Safari toolbars. */
 function updateSimulatorViewport(){const h=window.visualViewport?window.visualViewport.height:window.innerHeight;const toolbar=document.querySelector('.toolbar');const note=document.querySelector('.note');const hint=document.querySelector('.reply-hint:not([hidden])');const overhead=(toolbar?.getBoundingClientRect().height||44)+(note?.getBoundingClientRect().height||20)+(hint?.getBoundingClientRect().height||0)+65;document.documentElement.style.setProperty('--sim-available-height',Math.max(260,h-overhead)+'px')}
@@ -877,8 +905,10 @@ function hideSimKeyboard(kb){if(!kb||kb.hidden)return;clearTimeout(kb._hideTimer
 function setupSimKeyboard(input,showNow=false){
  const kb=document.getElementById('simKeyboard');if(!kb)return;let keyboardRaw=input.value;
  const left=[['1','2','3','4','5','6','7','8','9','0'],['ㅂ','ㅈ','ㄷ','ㄱ','ㅅ','ㅛ','ㅕ','ㅑ','ㅐ','ㅔ'],['ㅁ','ㄴ','ㅇ','ㄹ','ㅎ','ㅗ','ㅓ','ㅏ','ㅣ'],['⇧','ㅋ','ㅌ','ㅊ','ㅍ','ㅠ','ㅜ','ㅡ','⌫'],['!#1','한/영','☻','space','.', '↵']];
+ const splitLeft=[['1','2','3','4','5'],['ㅂ','ㅈ','ㄷ','ㄱ','ㅅ'],['ㅁ','ㄴ','ㅇ','ㄹ','ㅎ'],['⇧','ㅋ','ㅌ','ㅊ','ㅍ'],['!#1','한/영','☻','space']];
+ const splitRight=[['6','7','8','9','0'],['ㅛ','ㅕ','ㅑ','ㅐ','ㅔ'],['ㅗ','ㅓ','ㅏ','ㅣ'],['ㅠ','ㅜ','ㅡ','⌫'],['space','.','↵']];
  const folded=left.map(row=>'<div class="kb-row">'+row.map(k=>'<button type="button" class="kb-key '+(['⇧','⌫','!#1','한/영','↵'].includes(k)?'special ':'')+(k==='space'?'space ':(['⇧','⌫'].includes(k)?'wide':''))+'" data-key="'+k+'">'+(k==='space'?'ㅤ':k)+'</button>').join('')+'</div>').join('');
- kb.innerHTML='<div class="kb-toolbar"><button class="kb-hide" type="button" aria-label="키보드 닫기">▾</button><span>▤ &nbsp; 붙여넣기</span><span>⚙</span></div><div class="kb-keys">'+(opened?'<div>'+left.map(row=>'<div class="kb-row">'+row.slice(0,Math.ceil(row.length/2)).map(k=>'<button type="button" class="kb-key '+(k==='space'?'space':'')+'" data-key="'+k+'">'+(k==='space'?'ㅤ':k)+'</button>').join('')+'</div>').join('')+'</div><div>'+left.map(row=>'<div class="kb-row">'+row.slice(Math.ceil(row.length/2)).map(k=>'<button type="button" class="kb-key '+(k==='space'?'space':'')+'" data-key="'+k+'">'+(k==='space'?'ㅤ':k)+'</button>').join('')+'</div>').join('')+'</div>':folded)+'</div>';
+ kb.innerHTML='<div class="kb-toolbar"><button class="kb-hide" type="button" aria-label="키보드 닫기">▾</button><span>▤ &nbsp; 붙여넣기</span><span>⚙</span></div><div class="kb-keys">'+(opened?'<div>'+splitLeft.map(row=>'<div class="kb-row">'+row.map(k=>'<button type="button" class="kb-key '+(k==='space'?'space':'')+'" data-key="'+k+'">'+(k==='space'?'ㅤ':k)+'</button>').join('')+'</div>').join('')+'</div><div>'+splitRight.map(row=>'<div class="kb-row">'+row.map(k=>'<button type="button" class="kb-key '+(k==='space'?'space':'')+'" data-key="'+k+'">'+(k==='space'?'ㅤ':k)+'</button>').join('')+'</div>').join('')+'</div>':folded)+'</div>';
  kb.querySelector('.kb-hide').onclick=()=>{hideSimKeyboard(kb);input.blur()};
  kb.querySelectorAll('[data-key]').forEach(btn=>btn.onclick=()=>{
  const key=btn.dataset.key;if(key==='↵'){document.getElementById('sendReply')?.click();return}
