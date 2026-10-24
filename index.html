@@ -716,7 +716,7 @@ function updateSimulatorViewport(){const h=window.visualViewport?window.visualVi
 window.addEventListener('resize',updateSimulatorViewport,{passive:true});window.addEventListener('orientationchange',updateSimulatorViewport,{passive:true});window.visualViewport?.addEventListener('resize',updateSimulatorViewport,{passive:true});requestAnimationFrame(updateSimulatorViewport);
 const device=document.getElementById('device'),view=document.getElementById('view'),foldBtn=document.getElementById('foldBtn');let state='lock',digits='',opened=false,active='',kakaoTab='친구',kakaoPerson='',kakaoRoom='';
 const iconFiles={'카카오톡':'icon-kakao.png','전화':'icon-phone.png','Samsung Health':'icon-health.png','메시지':'icon-messages.png'};
-const apps=[['카카오톡','TALK','#fee500'],['YouTube','▶','#ff0033'],['전화','☎','#12b960'],['Samsung Health','♟','linear-gradient(135deg,#28dba5,#168be9)'],['Gemini','✦','#f3f4ff'],['메모','▤','#e72c23'],['NAVER','N','linear-gradient(180deg,#03e56b,#00b95a)'],['갤러리','✿','linear-gradient(135deg,#fc6895,#ff6b39,#9b35f5)'],['Instagram','◎','linear-gradient(35deg,#ffbd45,#f04b53,#b52ac7,#6549d6)']];
+const apps=[['카카오톡','TALK','#fee500'],['YouTube','▶','#ff0033'],['메모','▤','#e72c23'],['Samsung Health','♟','linear-gradient(135deg,#28dba5,#168be9)'],['Gemini','✦','#f3f4ff'],['NAVER','N','linear-gradient(180deg,#03e56b,#00b95a)'],['갤러리','✿','linear-gradient(135deg,#fc6895,#ff6b39,#9b35f5)'],['Instagram','◎','linear-gradient(35deg,#ffbd45,#f04b53,#b52ac7,#6549d6)']];
 
 const dynamicChat=[];let unreadDd=0,notificationTimeout=null;
 // Unread status is cleared only when the actual conversation is opened, not on app switching.
