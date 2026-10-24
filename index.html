@@ -483,7 +483,29 @@
 .instagram-app .ig-switch-shade,.instagram-app .ig-switch-shade *,.instagram-app .ig-account-name,.instagram-app .ig-account-name *,.instagram-app #igProfileTab,.instagram-app #igProfileTab *{-webkit-touch-callout:none!important;-webkit-user-select:none!important;user-select:none!important;-webkit-user-drag:none!important}
 .instagram-app .ig-switch-shade img,.instagram-app #igProfileTab img{pointer-events:none!important;-webkit-user-drag:none!important}
 .instagram-app .ig-switch-sheet button{touch-action:manipulation}
+</style><style>
+/* Responsive browser shell for iOS Safari, Android Chrome and desktop. */
+html{width:100%;min-width:0;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{min-width:0;overflow-x:hidden}
+.stage{width:100%;max-width:100%;min-height:100vh;min-height:100dvh;padding:clamp(10px,2vw,24px);gap:clamp(9px,1.8vh,18px)}
+.toolbar{max-width:100%;justify-content:center;gap:clamp(5px,1.5vw,10px)}
+.toolbar button{font-size:clamp(11px,2.7vw,14px);padding:clamp(7px,1.6vw,11px) clamp(10px,2.4vw,17px);white-space:nowrap}
+.device{box-sizing:border-box;flex:0 0 auto;width:min(350px,92vw,calc(var(--sim-available-height,900px)*.47))!important;max-width:100%;height:auto;aspect-ratio:.47}
+.device.open{width:min(700px,96vw,calc(var(--sim-available-height,900px)*1.12))!important;aspect-ratio:1.12}
+.device .screen,.device .view{min-width:0}
+.device .view{overflow:hidden}
+.device .view img,.device .view video{max-width:100%}
+.device .view button,.device .view input{min-width:0}
+.device .view [class*="list"],.device .view [class*="body"]{min-height:0}
+.device .android-nav{height:35px}
+.device .android-nav button{touch-action:manipulation}
+@media(max-width:480px){.stage{padding:10px 7px 14px}.toolbar{gap:6px}.toolbar button{padding:8px 10px}.device.open{border-width:5px;border-radius:17px}.device:not(.open){border-width:6px}}
+@media(orientation:landscape) and (max-height:550px){.stage{padding:6px;gap:5px}.toolbar button{padding:5px 9px}.note{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.device{transition:none!important}}
 </style></head><body><div class="stage"><div class="toolbar"><button id="foldBtn">↔ 펼치기</button><button id="resetBtn">🔒 잠금화면</button><span id="mode">커버 화면</span></div><div class="device" id="device"><div class="screen"><div class="status"><span id="simClock">2:10</span><span>▴ ▰ ◕ 85%</span></div><div class="view" id="view"></div><div class="android-nav"><button class="recent" aria-label="최근 앱" disabled>Ⅲ</button><button id="homebar" aria-label="홈으로">□</button><button id="androidBack" aria-label="뒤로">‹</button></div></div></div><div id="replyHint" class="reply-hint" aria-live="polite" hidden>노아에게 답장하자 (ex. 응, 보고싶어)</div><div class="note">Noah’s galaxy fold8</div></div><script>
+/* Fit the simulator to the visible browser viewport, including Safari toolbars. */
+function updateSimulatorViewport(){const h=window.visualViewport?window.visualViewport.height:window.innerHeight;const toolbar=document.querySelector('.toolbar');const note=document.querySelector('.note');const hint=document.querySelector('.reply-hint:not([hidden])');const overhead=(toolbar?.getBoundingClientRect().height||44)+(note?.getBoundingClientRect().height||20)+(hint?.getBoundingClientRect().height||0)+65;document.documentElement.style.setProperty('--sim-available-height',Math.max(260,h-overhead)+'px')}
+window.addEventListener('resize',updateSimulatorViewport,{passive:true});window.addEventListener('orientationchange',updateSimulatorViewport,{passive:true});window.visualViewport?.addEventListener('resize',updateSimulatorViewport,{passive:true});requestAnimationFrame(updateSimulatorViewport);
 const device=document.getElementById('device'),view=document.getElementById('view'),foldBtn=document.getElementById('foldBtn');let state='lock',digits='',opened=false,active='',kakaoTab='친구',kakaoPerson='',kakaoRoom='';
 const iconFiles={'카카오톡':'icon-kakao.png','전화':'icon-phone.png','Samsung Health':'icon-health.png','메시지':'icon-messages.png'};
 const apps=[['카카오톡','TALK','#fee500'],['YouTube','▶','#ff0033'],['전화','☎','#12b960'],['Samsung Health','♟','linear-gradient(135deg,#28dba5,#168be9)'],['Gemini','✦','#f3f4ff'],['갤러리','✿','linear-gradient(135deg,#fc6895,#ff6b39,#9b35f5)'],['Instagram','◎','linear-gradient(35deg,#ffbd45,#f04b53,#b52ac7,#6549d6)']];
