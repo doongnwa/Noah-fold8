@@ -379,6 +379,14 @@
 .device.video-landscape{width:min(720px,96vw)!important;aspect-ratio:1.65!important;border-radius:25px!important}
 .device.video-landscape .video-call-player{object-fit:contain!important}
 .device.video-landscape .call-overlay{inset:0}
+
+/* Three-stage Z Fold unfolding: portrait cover -> horizontal dark hinge -> open portrait */
+.device.video-transition{transition:width .52s ease,aspect-ratio .52s ease,transform .52s ease,border-radius .52s ease!important}
+.device.video-transition-flat{width:min(700px,96vw)!important;aspect-ratio:1.65!important;border-radius:12px!important;transform:perspective(1000px) rotateY(-5deg)!important}
+.device.video-transition-flat .screen{visibility:hidden!important}
+.device.video-transition-flat:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#101014,#000 49%,#101014);z-index:100}
+.device.video-transition-final{width:min(700px,96vw)!important;aspect-ratio:1.12!important;border-radius:15px!important;transform:none!important}
+.device.open .video-call-player{object-fit:contain}
 </style></head><body><div class="stage"><div class="toolbar"><button id="foldBtn">↔ 펼치기</button><button id="resetBtn">🔒 잠금화면</button><span id="mode">커버 화면</span></div><div class="device" id="device"><div class="screen"><div class="status"><span id="simClock">2:10</span><span>▴ ▰ ◕ 85%</span></div><div class="view" id="view"></div><div class="android-nav"><button class="recent" aria-label="최근 앱" disabled>Ⅲ</button><button id="homebar" aria-label="홈으로">□</button><button id="androidBack" aria-label="뒤로">‹</button></div></div></div><div id="replyHint" class="reply-hint" aria-live="polite" hidden>노아에게 답장하자 (ex. 노아생각)</div><div class="note">Noah’s galaxy fold8</div></div><script>
 const device=document.getElementById('device'),view=document.getElementById('view'),foldBtn=document.getElementById('foldBtn');let state='lock',digits='',opened=false,active='',kakaoTab='친구',kakaoPerson='',kakaoRoom='';
 const iconFiles={'카카오톡':'icon-kakao.png','전화':'icon-phone.png','Samsung Health':'icon-health.png','메시지':'icon-messages.png'};
@@ -420,8 +428,10 @@ function sendChatReply(text){text=text.trim();if(!text)return;appendChat(text,tr
 }
 function openDdChat(){unreadDd=0;device.querySelector('.kakao-banner')?.remove();active='카카오톡';state='app';kakaoTab='채팅';kakaoPerson='';kakaoRoom='ddong';draw();const body=view.querySelector('.kakao-room-body');if(body)body.scrollTop=body.scrollHeight;}
 let preVideoOpened=null;
-function enterVideoLandscape(){if(preVideoOpened===null)preVideoOpened=opened;opened=true;device.classList.add('open','video-landscape');foldBtn.textContent='↔ 접기';document.getElementById('mode').textContent='영상통화 · 가로 화면';}
-function leaveVideoLandscape(){if(preVideoOpened===null)return;opened=preVideoOpened;preVideoOpened=null;device.classList.remove('video-landscape');device.classList.toggle('open',opened);foldBtn.textContent=opened?'↔ 접기':'↔ 펼치기';document.getElementById('mode').textContent=opened?'내부 화면':'커버 화면';}
+let videoTransitionTimers=[];
+function clearVideoTransition(){videoTransitionTimers.forEach(clearTimeout);videoTransitionTimers=[];device.classList.remove('video-transition','video-transition-flat','video-transition-final');}
+function enterVideoLandscape(){if(preVideoOpened===null)preVideoOpened=opened;clearVideoTransition();opened=true;device.classList.add('video-transition');foldBtn.textContent='↔ 접기';document.getElementById('mode').textContent='펼치는 중';videoTransitionTimers.push(setTimeout(()=>{device.classList.add('video-transition-flat');},420));videoTransitionTimers.push(setTimeout(()=>{device.classList.remove('video-transition-flat');device.classList.add('open','video-transition-final');document.getElementById('mode').textContent='내부 화면';},1050));videoTransitionTimers.push(setTimeout(()=>{clearVideoTransition();device.classList.add('open');},1660));}
+function leaveVideoLandscape(){if(preVideoOpened===null)return;clearVideoTransition();opened=preVideoOpened;preVideoOpened=null;device.classList.remove('video-landscape');device.classList.toggle('open',opened);foldBtn.textContent=opened?'↔ 접기':'↔ 펼치기';document.getElementById('mode').textContent=opened?'내부 화면':'커버 화면';}
 function showCall(type='voice',outgoing=false){if(incomingCall)return;incomingCall={type,answered:!!outgoing,outgoing,startedAt:outgoing?Date.now():null};if(type==='video'&&outgoing)enterVideoLandscape();renderCall();}
 function renderCall(){
  document.querySelector('.call-overlay')?.remove();
