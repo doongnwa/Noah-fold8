@@ -700,6 +700,11 @@ body{min-width:0;overflow-x:hidden}
 .kakao-room-bottom-static .plus-chat{flex:none;display:grid;place-items:center;border-radius:50%;background:#f5f5f5;width:34px;height:34px;font-size:24px;color:#303030}
 .kakao-static-placeholder{min-width:0;flex:1;border-radius:24px;background:#f4f4f4;color:#b4b4b4;padding:11px 13px}
 .kakao-room-bottom-static .emoji-chat{border-radius:50%;background:#e5e5e5;color:#444;padding:9px}.kakao-static-send{background:#fee500;border-radius:10px;padding:11px 12px;color:#222}
+</style><style>
+/* Reserve the Android navigation bar area on both NAVER screens. */
+.naver-app{box-sizing:border-box;height:calc(100% - 35px)!important;max-height:calc(100% - 35px)!important;overflow:hidden}
+.naver-history-scroll{min-height:0;flex:1 1 auto;overflow-y:auto;overscroll-behavior:contain;padding-bottom:12px;box-sizing:border-box}
+.naver-cards{min-height:0;flex:1 1 auto;overscroll-behavior:contain}
 </style></head><body><div class="stage"><div class="toolbar"><button id="foldBtn">↔ 펼치기</button><button id="resetBtn">🔒 잠금화면</button><span id="mode">커버 화면</span></div><div class="device" id="device"><div class="screen"><div class="status"><span id="simClock">2:10</span><span>▴ ▰ ◕ 85%</span></div><div class="view" id="view"></div><div class="android-nav"><button class="recent" aria-label="최근 앱" disabled>Ⅲ</button><button id="homebar" aria-label="홈으로">□</button><button id="androidBack" aria-label="뒤로">‹</button></div></div></div><div id="replyHint" class="reply-hint" aria-live="polite" hidden>노아에게 답장하자 (ex. 응, 보고싶어)</div><div class="note">Noah’s galaxy fold8</div></div><script>
 /* Fit the simulator to the visible browser viewport, including Safari toolbars. */
 function updateSimulatorViewport(){const h=window.visualViewport?window.visualViewport.height:window.innerHeight;const toolbar=document.querySelector('.toolbar');const note=document.querySelector('.note');const hint=document.querySelector('.reply-hint:not([hidden])');const overhead=(toolbar?.getBoundingClientRect().height||44)+(note?.getBoundingClientRect().height||20)+(hint?.getBoundingClientRect().height||0)+65;document.documentElement.style.setProperty('--sim-available-height',Math.max(260,h-overhead)+'px')}
