@@ -587,7 +587,36 @@ body{min-width:0;overflow-x:hidden}
 .device.open .call-ongoing:not(.video-call) .call-bottom .end-phone-svg{
  width:45%;height:45%;
 }
-</style><style>.instagram-app .ig-switch-sheet>button,.instagram-app .ig-switch-title button{touch-action:manipulation;cursor:pointer;-webkit-tap-highlight-color:transparent}.instagram-app .ig-switch-shade{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}</style></head><body><div class="stage"><div class="toolbar"><button id="foldBtn">↔ 펼치기</button><button id="resetBtn">🔒 잠금화면</button><span id="mode">커버 화면</span></div><div class="device" id="device"><div class="screen"><div class="status"><span id="simClock">2:10</span><span>▴ ▰ ◕ 85%</span></div><div class="view" id="view"></div><div class="android-nav"><button class="recent" aria-label="최근 앱" disabled>Ⅲ</button><button id="homebar" aria-label="홈으로">□</button><button id="androidBack" aria-label="뒤로">‹</button></div></div></div><div id="replyHint" class="reply-hint" aria-live="polite" hidden>노아에게 답장하자 (ex. 응, 보고싶어)</div><div class="note">Noah’s galaxy fold8</div></div><script>
+</style><style>.instagram-app .ig-switch-sheet>button,.instagram-app .ig-switch-title button{touch-action:manipulation;cursor:pointer;-webkit-tap-highlight-color:transparent}.instagram-app .ig-switch-shade{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}</style><style>
+/* Fold8 inner display density: show more content rather than magnifying cover-screen UI. */
+.device.open .desktop{
+ grid-template-rows:minmax(0,31fr) minmax(0,31fr) minmax(0,12fr) minmax(0,26fr)!important;
+ padding:clamp(6px,1.4vh,10px) clamp(9px,2vw,17px) clamp(6px,1.4vh,10px)!important;
+}
+.device.open .home-widgets{width:min(47%,295px)!important;max-height:100%!important}
+.device.open .brief{border-radius:12px!important;padding:5px 7px!important}
+.device.open .brief-mark{font-size:clamp(11px,2.6vh,18px)!important}
+.device.open .brief b{font-size:clamp(9px,2vh,12px)!important}
+.device.open .brief small,.device.open .weather small{font-size:clamp(7px,1.5vh,9px)!important}
+.device.open .widget-right{gap:4px!important}
+.device.open .weather,.device.open .date-widget{border-radius:15px!important;font-size:clamp(9px,2vh,13px)!important}
+.device.open .weather b{font-size:clamp(10px,2.4vh,15px)!important}
+.device.open .date-widget>span:first-child{font-size:clamp(13px,3vh,19px)!important}
+.device.open .desktop .apps{grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:3px 4px!important}
+.device.open .desktop .app{gap:2px!important}
+.device.open .desktop .apps .icon{width:clamp(19px,5.2vh,32px)!important;height:clamp(19px,5.2vh,32px)!important;border-radius:9px!important}
+.device.open .desktop .apps .icon svg,.device.open .desktop .apps .icon img{max-width:100%;max-height:100%}
+.device.open .desktop .app small{font-size:clamp(7px,1.45vh,9px)!important;line-height:1.1}
+.device.open .desktop .dock .icon{width:clamp(21px,5.8vh,36px)!important;height:clamp(21px,5.8vh,36px)!important;border-radius:10px!important}
+.device.open .desktop .searchbar{max-height:clamp(18px,4.5vh,28px)!important;width:min(58%,340px)!important}
+.device.open .desktop .searchbar input{font-size:clamp(9px,1.6vh,12px)!important}
+.device.open .page{min-width:0;overflow:hidden}
+.device.open .page .pagehead{min-height:0!important;padding:clamp(8px,2vh,13px) clamp(10px,2vw,18px)!important}
+.device.open .page .pagebody{min-width:0;min-height:0;overflow-y:auto}
+.device.open .page .photos{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:2px!important;align-content:start}
+.device.open .page .photos img,.device.open .page .photos video{width:100%;min-width:0;aspect-ratio:1;object-fit:cover}
+.device.open .page .card{padding:clamp(7px,1.5vh,12px);margin-bottom:clamp(5px,1vh,9px)}
+</style></head><body><div class="stage"><div class="toolbar"><button id="foldBtn">↔ 펼치기</button><button id="resetBtn">🔒 잠금화면</button><span id="mode">커버 화면</span></div><div class="device" id="device"><div class="screen"><div class="status"><span id="simClock">2:10</span><span>▴ ▰ ◕ 85%</span></div><div class="view" id="view"></div><div class="android-nav"><button class="recent" aria-label="최근 앱" disabled>Ⅲ</button><button id="homebar" aria-label="홈으로">□</button><button id="androidBack" aria-label="뒤로">‹</button></div></div></div><div id="replyHint" class="reply-hint" aria-live="polite" hidden>노아에게 답장하자 (ex. 응, 보고싶어)</div><div class="note">Noah’s galaxy fold8</div></div><script>
 /* Fit the simulator to the visible browser viewport, including Safari toolbars. */
 function updateSimulatorViewport(){const h=window.visualViewport?window.visualViewport.height:window.innerHeight;const toolbar=document.querySelector('.toolbar');const note=document.querySelector('.note');const hint=document.querySelector('.reply-hint:not([hidden])');const overhead=(toolbar?.getBoundingClientRect().height||44)+(note?.getBoundingClientRect().height||20)+(hint?.getBoundingClientRect().height||0)+65;document.documentElement.style.setProperty('--sim-available-height',Math.max(260,h-overhead)+'px')}
 window.addEventListener('resize',updateSimulatorViewport,{passive:true});window.addEventListener('orientationchange',updateSimulatorViewport,{passive:true});window.visualViewport?.addEventListener('resize',updateSimulatorViewport,{passive:true});requestAnimationFrame(updateSimulatorViewport);
