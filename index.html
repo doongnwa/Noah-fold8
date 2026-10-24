@@ -1000,7 +1000,7 @@ if(kakaoRoom){
  them('노아생각!','오후 8:53')+
  me('너도?','오후 8:53')+
  me('나도💜','오후 8:53');
- }else roomBody='<div class="kakao-placeholder">대화 내용은 추후 추가 예정</div>';
+ }else roomBody='';
  if(kakaoRoom==='ddong')roomBody+=dynamicChat.map((m,i)=>((i===0||dynamicChat[i-1].date!==m.date)?'<div class="kakao-day">'+escapeHtml(m.date||new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'long'}))+'</div>':'')+renderDynamic(m)).join('');
  inner=roomHeader+'<div class="kakao-room-body '+(kakaoRoom==='ddong'?'ddong-room':'')+'">'+roomBody+'</div>'+(kakaoRoom==='ddong'?'<div class="kakao-room-bottom"><button class="plus-chat" type="button" aria-label="첨부">＋</button><input id="chatReply" type="text" '+(ddongChatLocked?'disabled ':'')+'placeholder="'+('메시지 입력')+'" aria-label="메시지 입력" autocomplete="off" inputmode="text" aria-haspopup="true"><button class="emoji-chat" type="button" aria-label="이모티콘">☻</button><button id="sendReply" type="button" '+(ddongChatLocked?'disabled':'')+'>전송</button></div><div class="sim-keyboard" id="simKeyboard" hidden></div>':'<div class="kakao-room-bottom">메시지 입력 (추후 구현)</div>');
 }else if(kakaoPerson){inner='<div class="kakao-top"><button class="kakao-back" id="kakaoBack" aria-label="뒤로">‹</button><span>프로필</span><span></span></div><div class="kakao-profile">'+profileAvatar(kakaoPerson)+'<strong>'+kakaoPerson+'</strong><span class="pending">프로필</span></div>'}
