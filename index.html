@@ -233,6 +233,14 @@
 .kakao-chat-row .chat-meta{align-self:center;min-width:48px}.kakao-chat-row .chat-unread{background:#f45130;color:white;font-size:11px;min-width:20px;height:20px;margin-top:7px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
 @media(prefers-reduced-motion:reduce){.instagram-app.ig-opening,.sim-keyboard.kb-opening,.sim-keyboard.kb-closing{animation:none}}
 
+
+/* Immersive video call; tap video to reveal the end-call control */
+.call-overlay.video-call.call-ongoing>.call-topline,.call-overlay.video-call.call-ongoing>.call-connected-head,.call-overlay.video-call.call-ongoing>.call-control-grid,.call-overlay.video-call.call-ongoing>.call-bottom,.call-overlay.video-call.call-ongoing .video-call-label{display:none!important}
+.call-overlay.video-call.call-ongoing.video-controls-visible>.call-bottom{display:grid!important;position:absolute;bottom:4%;left:0;right:0;height:75px;z-index:4}
+.call-overlay.video-call.call-ongoing.video-controls-visible>.call-bottom .call-decline{box-shadow:0 4px 22px #0009}
+.video-call-ended-card{position:absolute;inset:0;z-index:20;background:#111e;color:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;font-size:25px;font-weight:650}
+.video-call-ended-card small{font-size:15px;font-weight:400;color:#ddd}
+.call-overlay.video-call-finished .video-call-player{visibility:hidden}
 /* Simulated live video call: remote feed behind call controls */
 .call-overlay.video-call.call-ongoing{background:#090909}
 .call-overlay.video-call.call-ongoing:before,.call-overlay.video-call.call-ongoing:after{display:none}
@@ -411,7 +419,16 @@ function renderCall(){
  const tools='<div class="call-control-grid">'+[['▣','녹음'],['♩','내 소리 차단'],['ᛒ','블루투스'],['◖))','스피커'],['⠿','키패드'],['⋮','더 보기']].map((x,i)=>'<button class="call-control" type="button" data-control="'+i+'"><span class="call-control-icon">'+x[0]+'</span><small>'+x[1]+'</small></button>').join('')+'</div>';
  el.innerHTML=videoMedia+'<div class="call-topline"><span>◂ 9:45 ☎</span><span>▰ 5G ▴ ▣</span></div>'+(c.answered?'<div class="call-connected-head"><div class="call-hd">'+(c.type==='video'?'▣ 영상통화':'▣ HD Voice')+' <span class="call-timer">'+elapsed()+'</span></div><div class="call-contact">내 둥둥이💜</div><div class="call-subtitle">통화 중</div></div>'+tools+'<div class="call-bottom"><button class="call-decline" id="callEnd" aria-label="통화 종료"><svg class="end-phone-svg" viewBox="0 0 24 24" width="31" height="31" aria-hidden="true"><path d="M3.2 13.3c5.2-4.2 12.4-4.2 17.6 0l-2.2 4.5a1.4 1.4 0 0 1-1.8.7l-2.7-1.1a1.4 1.4 0 0 1-.9-1.3v-1.3a15 15 0 0 0-2.4 0v1.3a1.4 1.4 0 0 1-.9 1.3l-2.7 1.1a1.4 1.4 0 0 1-1.8-.7z" fill="currentColor"/></svg></button></div>':'<div class="call-incoming-head"><div class="call-contact">내 둥둥이💜</div><div class="call-subtitle">'+(c.type==='video'?'영상통화 수신 중':'전화 수신 중')+'</div></div><div class="call-incoming-actions"><button class="call-decline" id="callReject" aria-label="전화 거절">☎</button><button class="call-answer" id="callAnswer" aria-label="전화 받기">☎</button></div>');
  device.querySelector('.screen').append(el);
- const videoPlayer=el.querySelector('.video-call-player');if(videoPlayer){videoPlayer.addEventListener('ended',()=>{if(incomingCall===c)finishCall(true)},{once:true});videoPlayer.muted=false;videoPlayer.play().catch(()=>{videoPlayer.muted=true;videoPlayer.play().catch(()=>{})});}
+ const videoPlayer=el.querySelector('.video-call-player');if(videoPlayer){
+  let ending=false;
+  const endVideo=()=>{if(ending||incomingCall!==c)return;ending=true;videoPlayer.pause();el.classList.add('video-call-finished');const endCard=document.createElement('div');endCard.className='video-call-ended-card';endCard.innerHTML='<span>영상통화 종료</span><small>내 둥둥이💜</small>';el.append(endCard);setTimeout(()=>{if(incomingCall===c)finishCall(true)},1600)};
+  videoPlayer.loop=false;videoPlayer.removeAttribute('loop');
+  videoPlayer.addEventListener('ended',endVideo,{once:true});
+  videoPlayer.addEventListener('timeupdate',()=>{if(Number.isFinite(videoPlayer.duration)&&videoPlayer.duration>0&&videoPlayer.currentTime>=videoPlayer.duration-0.18)endVideo()});
+  videoPlayer.addEventListener('loadedmetadata',()=>{if(videoPlayer.duration>0){const maxDuration=videoPlayer.duration;setTimeout(()=>{if(incomingCall===c&&!ending&&videoPlayer.currentTime>=maxDuration-0.5)endVideo()},(maxDuration+1)*1000)}});
+  videoPlayer.addEventListener('click',()=>{el.classList.toggle('video-controls-visible')});
+  videoPlayer.muted=false;videoPlayer.play().catch(()=>{videoPlayer.muted=true;videoPlayer.play().catch(()=>{})});
+ }
  if(c.answered){const timerLabel=el.querySelector('.call-timer');const timer=setInterval(()=>{if(!el.isConnected||incomingCall!==c){clearInterval(timer);return}timerLabel.textContent=elapsed()},1000);
  el.querySelectorAll('.call-control').forEach(btn=>btn.onclick=()=>{btn.classList.toggle('selected');if(btn.dataset.control==='4'){const pad=el.querySelector('.call-keypad');if(pad)pad.remove();else{const p=document.createElement('div');p.className='call-keypad';p.innerHTML='<button class="close-keypad">닫기 ×</button><div>'+Array.from('123456789*0#').map(k=>'<button>'+k+'</button>').join('')+'</div>';el.append(p);p.querySelector('.close-keypad').onclick=()=>p.remove()}}});
  const audio=document.getElementById('callVoiceAudio');if(audio&&c.type==='voice'){audio.currentTime=0;audio.play().catch(()=>{});}
@@ -548,7 +565,7 @@ if(kakaoRoom){
 }else if(kakaoPerson){inner='<div class="kakao-top"><button class="kakao-back" id="kakaoBack" aria-label="뒤로">‹</button><span>프로필</span><span></span></div><div class="kakao-profile">'+profileAvatar(kakaoPerson)+'<strong>'+kakaoPerson+'</strong><span class="pending">프로필</span></div>'}
 else if(kakaoTab==='친구')inner='<div class="kakao-top"><h2>친구</h2><div class="kakao-tools"><span>⌕</span><span>♫</span><span>⚙</span></div></div><div class="kakao-list"><button class="kakao-row self" data-person="한노아">'+profileAvatar('한노아')+'<span class="kakao-name">한노아</span></button><div class="kakao-section">친구 '+friends.length+'</div>'+friends.map(name=>'<button class="kakao-row" data-person="'+name+'">'+profileAvatar(name)+'<span class="kakao-name">'+name+'</span></button>').join('')+'</div>';
 else {
- const rooms=[['ddong','내 둥둥이💜',dynamicChat.length?dynamicChat[dynamicChat.length-1].text:'나도💜',dynamicChat.length?dynamicChat[dynamicChat.length-1].time:'오후 8:53','ddong','♥'],['playve','플레이브','단체 채팅 · 남예준, 채봉구, 도은호, 유하민','고정','group','♟'],['mom','어마마마','동영상','9월 6일','mom','♥'],['hamin','유하민','어디에요?','10월 19일','hamin','♙']];
+ const rooms=[['ddong','내 둥둥이💜',dynamicChat.length?dynamicChat[dynamicChat.length-1].text:'나도💜',dynamicChat.length?dynamicChat[dynamicChat.length-1].time:'오후 8:53','ddong','♥'],['playve','플레이브','단체 채팅 · 남예준, 채봉구, 도은호, 유하민','10월 20일','group','♟'],['mom','어마마마','동영상','9월 6일','mom','♥'],['hamin','유하민','어디에요?','10월 19일','hamin','♙']];
  inner='<div class="kakao-top"><h2>채팅</h2><div class="kakao-tools"><span>⌕</span><span>＋</span><span>⚙</span></div></div><div class="kakao-list">'+rooms.map(([id,name,preview,date,kind,symbol])=>'<button class="kakao-chat-row" data-room="'+id+'"><span class="kakao-avatar '+kind+'">'+'<img src="'+({playve:'playve-group.jpg',mom:'profile-5.jpg',hamin:'profile-4.jpg',ddong:'ddong-avatar.jpg'}[id])+'" alt="프로필">'+'</span><span class="chat-info"><span class="chat-name">'+(id==='ddong'?'<span class="kakao-pin-symbol" aria-label="상단 고정">♟</span> ':id==='playve'?'📌 ':'')+name+'</span><div class="chat-preview">'+preview+'</div></span><span class="chat-meta">'+date+(id==='hamin'&&!haminRead?'<span class="chat-unread">2</span>':'')+'</span></button>').join('')+'</div>';
 }
 const nav='<nav class="kakao-nav" aria-label="카카오톡 하단 메뉴">'+tabs.map(([label,icon])=>'<button class="kakao-tab '+(label===kakaoTab?'selected':'')+'" data-tab="'+label+'" '+(!['친구','채팅'].includes(label)?'disabled aria-label="'+label+' (준비 중)"':'')+'><span class="tabicon">'+icon+'</span><span>'+label+'</span></button>').join('')+'</nav>';
