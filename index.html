@@ -490,7 +490,7 @@ function drawGemini(){
 }
 const instagramUploads=["4D03717F-54EC-4E75-8920-4C6A457F107E.jpeg","E36C3851-80B7-49D7-B45A-8CA9D2E06A05.jpeg","IMG_2793.jpeg","IMG_4343.jpeg","IMG_4344.jpeg","IMG_5064.jpeg","IMG_5257.jpeg","IMG_5340.jpeg","IMG_5729.jpeg","IMG_6102.jpeg","IMG_6527.jpeg","IMG_6528.jpeg","IMG_6529.jpeg","IMG_6530.jpeg","IMG_6531.jpeg","IMG_6851.jpeg"];
 
-const instagramOrder=instagramUploads.slice().sort((a,b)=>Number((b.match(/IMG_(\\d+)/)||[])[1]||0)-Number((a.match(/IMG_(\\d+)/)||[])[1]||0));
+const instagramOrder=instagramUploads.slice().sort((a,b)=>Number((b.match(/IMG_(\d+)/)||[])[1]||0)-Number((a.match(/IMG_(\d+)/)||[])[1]||0));
 const instagramPosts=[
 {ids:[15,16],date:'2026-09-05',caption:'월드투어 잘 부탁드립니다 플리!💙💜🩷❤️🖤',comments:[['yejun_dudu','플리야 쫌이따 보자 아자아자 화이팅이야💙💜🩷❤️🖤','9월 5일 오후 3:05'],['yuhamini','플리야~~~곧 만나자요🖤','9월 5일 오후 3:15'],['bbong9','화이팅 밤팅💪👏','9월 5일 오후 3:29'],['cwk_eunho','플리야 우리가 곧 만나러 갈게❤️','9월 5일 오후 3:45']]},
 {ids:[1],date:'2026-08-24',caption:'우리 뫄💜'},
